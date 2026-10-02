@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>500 — Server Bermasalah | PalembangPy</title>
+  <link rel="shortcut icon" href="/img/palembangpy.png" type="image/x-icon" />
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', system-ui, sans-serif; }
+    .text-gradient {
+      background: linear-gradient(135deg, #64748b, #475569, #334155);
+      -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+    .animate-float { animation: float 4s ease-in-out infinite; }
+  </style>
+</head>
+<body class="bg-slate-50 min-h-screen flex items-center justify-center px-4 py-10">
+  <div class="max-w-md w-full text-center">
+    <div class="relative w-32 h-32 mx-auto mb-6 animate-float">
+      <div class="absolute inset-0 rounded-full bg-gradient-to-br from-slate-400 to-slate-700 opacity-20 blur-2xl"></div>
+      <div class="relative w-full h-full rounded-full bg-gradient-to-br from-slate-500 to-slate-800 flex items-center justify-center shadow-xl shadow-slate-500/30">
+        <i class="fa fa-4x fa-server text-white text-5xl"></i>
+      </div>
+      <div class="absolute -top-2 -right-2 w-10 h-10 rounded-full bg-white shadow-lg flex items-center justify-center">
+        <i class="fa fa-exclamation text-red-500 text-lg"></i>
+      </div>
+    </div>
+
+    <h1 class="text-7xl md:text-8xl font-black text-gradient leading-none mb-2">500</h1>
+    <h2 class="text-xl md:text-2xl font-bold text-slate-800 mb-3">Server Sedang Bermasalah</h2>
+    <p class="text-sm text-slate-500 leading-relaxed mb-8">
+      Terjadi kesalahan pada sisi server. Tim teknis kami telah menerima notifikasi dan sedang
+      menanganinya. Silakan coba lagi beberapa saat lagi. Kami mohon maaf atas ketidaknyamanannya.
+    </p>
+
+    <div class="flex flex-col sm:flex-row gap-3 justify-center mb-8">
+      <button onclick="location.reload()" class="px-6 py-3 bg-gradient-to-r from-orange-500 to-red-500 text-white font-semibold text-sm rounded-xl shadow-lg shadow-orange-500/30 hover:shadow-xl hover:-translate-y-0.5 transition-all">
+        <i class="fa fa-refresh mr-2"></i>Muat Ulang Halaman
+      </button>
+      <a href="index.html" class="px-6 py-3 bg-white border border-slate-200 text-slate-600 font-semibold text-sm rounded-xl hover:border-orange-200 hover:text-orange-600 transition-all">
+        <i class="fa fa-home mr-2"></i>Kembali ke Beranda
+      </a>
+    </div>
+
+    <!-- Status -->
+    <div class="bg-white rounded-xl border border-slate-100 p-4 text-left mb-6">
+      <div class="flex items-center justify-between mb-2">
+        <span class="text-[11px] text-slate-400 uppercase tracking-wide font-semibold">Status Sistem</span>
+        <span class="flex items-center gap-1.5 text-[11px] font-semibold text-amber-600">
+          <span class="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span> Gangguan Terdeteksi
+        </span>
+      </div>
+      <div class="space-y-1.5">
+        <div class="flex items-center justify-between text-[11px]">
+          <span class="text-slate-500">API Backend</span>
+          <span class="text-amber-600 font-medium">Degradasi</span>
+        </div>
+        <div class="flex items-center justify-between text-[11px]">
+          <span class="text-slate-500">Database</span>
+          <span class="text-emerald-600 font-medium">Normal</span>
+        </div>
+        <div class="flex items-center justify-between text-[11px]">
+          <span class="text-slate-500">Telegram Bot</span>
+          <span class="text-emerald-600 font-medium">Normal</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-slate-100 rounded-xl p-4 text-left">
+      <p class="text-[11px] text-slate-500 leading-relaxed">
+        <strong class="text-slate-700">Butuh bantuan segera?</strong> Hubungi pengurus melalui
+        bot Telegram <strong>@PalembangPyBot</strong> atau email
+        <strong class="text-orange-600">hello@palembangpy.or.id</strong> dengan menyertakan kode error di bawah.
+      </p>
+    </div>
+
+    <p class="text-[11px] text-slate-400 mt-8">
+      Error code: <span class="font-mono font-semibold">ERR_INTERNAL_SERVER</span> · ID Insiden: <span class="font-mono" id="incidentId">—</span>
+    </p>
+  </div>
+
+  <script>
+    (function () {
+      var el = document.getElementById('incidentId');
+      if (el) el.textContent = 'INC-' + Date.now().toString(36).toUpperCase();
+    })();
+  </script>
+</body>
+</html>

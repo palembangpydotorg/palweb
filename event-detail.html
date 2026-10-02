@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Detail Event — PalembangPy</title>
+  <link rel="shortcut icon" href="/img/palembangpy.png" type="image/x-icon" />
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', system-ui, -apple-system, sans-serif; }
+    .agenda-item { border-left: 2px solid #fed7aa; padding-left: 1rem; position: relative; }
+    .agenda-item::before {
+      content: ''; position: absolute; left: -5px; top: 6px;
+      width: 8px; height: 8px; border-radius: 50%; background: #ff7b00;
+    }
+    /* Loading overlay styles */
+    #loadingOverlay {
+      position: fixed; inset: 0; background: white; z-index: 9999;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+    }
+  </style>
+</head>
+<body class="bg-slate-50 overflow-x-hidden">
+
+  <!-- Loading State -->
+  <div id="loadingOverlay">
+    <i class="fa fa-spinner fa-spin text-4xl text-orange-500 mb-3"></i>
+    <p class="text-slate-500 font-medium">Memuat data event...</p>
+  </div>
+
+  <!-- NAVBAR -->
+  <nav class="sticky top-0 z-50 bg-white/85 backdrop-blur-xl border-b border-orange-100">
+    <div class="max-w-6xl mx-auto px-4 md:px-6 py-3 flex items-center justify-between">
+      <a href="index.html" class="flex items-center gap-2">
+        <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-orange-500 to-red-500 flex items-center justify-center shadow-lg shadow-orange-500/30">
+          <i class="fa fa-code text-white text-sm"></i>
+        </div>
+        <span class="font-bold text-slate-800">PalembangPy</span>
+      </a>
+      <div class="hidden md:flex items-center gap-6 text-sm text-slate-600">
+        <a href="index.html" class="hover:text-orange-600 transition">Beranda</a>
+        <a href="events.html" class="text-orange-600 font-semibold">Event</a>
+        <a href="legal.html" class="hover:text-orange-600 transition">Legal</a>
+      </div>
+      <a href="login-user.html" class="px-4 py-2 text-xs md:text-sm font-semibold bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-xl shadow-md shadow-orange-500/25 hover:shadow-lg transition-all">
+        Masuk
+      </a>
+    </div>
+  </nav>
+
+  <!-- BREADCRUMB -->
+  <div class="max-w-6xl mx-auto px-4 md:px-6 pt-5">
+    <nav class="flex items-center gap-2 text-xs text-slate-400">
+      <a href="index.html" class="hover:text-orange-600">Beranda</a>
+      <i class="fa fa-angle-right text-[10px]"></i>
+      <a href="events.html" class="hover:text-orange-600">Event</a>
+      <i class="fa fa-angle-right text-[10px]"></i>
+      <span class="text-slate-600 font-medium" id="bc-title">Detail Event</span>
+    </nav>
+  </div>
+
+  <!-- HERO EVENT -->
+  <header class="max-w-6xl mx-auto px-4 md:px-6 py-6 md:py-8">
+    <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+      <!-- Banner -->
+      <div id="hero-banner" class="relative h-48 md:h-64 bg-gradient-to-br from-blue-500 via-indigo-500 to-purple-600 overflow-hidden">
+        <div class="absolute inset-0 flex items-center justify-center">
+          <i id="hero-icon" class="fa fa-laptop text-white text-7xl md:text-8xl opacity-20"></i>
+        </div>
+        <div class="absolute top-4 left-4 flex flex-wrap gap-2">
+          <span id="badge-type" class="px-3 py-1 bg-white/25 backdrop-blur-md text-white text-[10px] font-semibold rounded-full capitalize">Workshop</span>
+          <span id="badge-price" class="px-3 py-1 bg-amber-500/90 text-white text-[10px] font-bold rounded-full">Rp 0</span>
+        </div>
+        <div class="absolute bottom-4 left-4 right-4 text-white">
+          <p class="text-[11px] opacity-80 mb-1"><i class="fa fa-calendar-o mr-1"></i><span id="hero-date">TBA</span></p>
+          <h1 id="hero-title" class="text-xl md:text-3xl font-extrabold leading-tight">Judul Event</h1>
+        </div>
+      </div>
+
+      <!-- Info Bar -->
+      <div class="grid grid-cols-2 md:grid-cols-4 divide-x divide-slate-100 border-b border-slate-100">
+        <div class="p-4 text-center">
+          <i class="fa fa-calendar text-orange-500 text-lg mb-1"></i>
+          <p class="text-[10px] text-slate-400 uppercase tracking-wide">Tanggal</p>
+          <p id="info-date" class="text-xs md:text-sm font-semibold text-slate-700">TBA</p>
+        </div>
+        <div class="p-4 text-center">
+          <i class="fa fa-clock-o text-orange-500 text-lg mb-1"></i>
+          <p class="text-[10px] text-slate-400 uppercase tracking-wide">Waktu</p>
+          <p id="info-time" class="text-xs md:text-sm font-semibold text-slate-700">TBA</p>
+        </div>
+        <div class="p-4 text-center border-t border-slate-100 md:border-t-0">
+          <i class="fa fa-map-marker text-orange-500 text-lg mb-1"></i>
+          <p class="text-[10px] text-slate-400 uppercase tracking-wide">Lokasi</p>
+          <p id="info-location" class="text-xs md:text-sm font-semibold text-slate-700 truncate px-2">TBA</p>
+        </div>
+        <div class="p-4 text-center border-t border-slate-100 md:border-t-0">
+          <i class="fa fa-users text-orange-500 text-lg mb-1"></i>
+          <p class="text-[10px] text-slate-400 uppercase tracking-wide">Status</p>
+          <p class="text-xs md:text-sm font-semibold text-emerald-600">Terbuka</p>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- KONTEN UTAMA -->
+  <main class="max-w-6xl mx-auto px-4 md:px-6 pb-12">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+      <!-- KIRI -->
+      <div class="lg:col-span-2 space-y-6">
+        <!-- Deskripsi -->
+        <section class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 md:p-8">
+          <h2 class="text-lg md:text-xl font-bold text-slate-800 mb-4 flex items-center gap-2">
+            <i class="fa fa-align-left text-orange-500"></i> Tentang Event Ini
+          </h2>
+          <div id="event-desc" class="text-sm text-slate-600 leading-relaxed space-y-3 whitespace-pre-line">
+            Deskripsi event belum tersedia.
+          </div>
+        </section>
+      </div>
+
+      <!-- KANAN: CTA Card, Lokasi -->
+      <div class="space-y-6">
+        <!-- Tiket / Daftar -->
+        <div class="bg-white rounded-2xl shadow-lg border border-slate-100 p-6 sticky top-24">
+          <div class="text-center mb-6 pb-4 border-b border-slate-100">
+            <p class="text-[10px] text-slate-400 uppercase tracking-wide">Biaya Pendaftaran</p>
+            <p id="card-price" class="text-3xl font-extrabold text-slate-800 mt-1">Rp 0</p>
+            <p id="card-price-notes" class="text-[11px] text-emerald-600 font-medium mt-1"><i class="fa fa-ticket mr-1"></i>Termasuk e-Sertifikat</p>
+          </div>
+
+          <a href="login-user.html" class="block w-full text-center px-6 py-3.5 bg-gradient-to-r from-orange-500 to-red-500 text-white font-bold text-sm rounded-xl shadow-lg shadow-orange-500/30 hover:shadow-xl hover:-translate-y-0.5 transition-all mb-2">
+            <i class="fa fa-sign-in mr-2"></i>Daftar Sekarang
+          </a>
+          <p class="text-[10px] text-slate-400 text-center">Pendaftaran melalui platform / bot Telegram</p>
+        </div>
+
+        <!-- Lokasi Card -->
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6">
+          <h3 class="font-bold text-slate-800 mb-3 flex items-center gap-2 text-sm">
+            <i class="fa fa-map-marker text-orange-500"></i> Lokasi Acara
+          </h3>
+          <div class="aspect-video bg-gradient-to-br from-slate-200 to-slate-300 rounded-xl flex items-center justify-center mb-3 relative overflow-hidden">
+            <i class="fa fa-map text-4xl text-slate-400"></i>
+            <div class="absolute inset-0 flex items-center justify-center">
+              <div class="w-10 h-10 rounded-full bg-red-500/20 flex items-center justify-center animate-ping absolute"></div>
+              <div class="w-8 h-8 rounded-full bg-red-500 flex items-center justify-center text-white text-sm relative"><i class="fa fa-map-marker"></i></div>
+            </div>
+          </div>
+          <p id="card-location" class="text-xs font-semibold text-slate-700">TBA</p>
+        </div>
+
+        <!-- Share -->
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6">
+          <h3 class="font-bold text-slate-800 mb-3 text-sm flex items-center gap-2">
+            <i class="fa fa-share-alt text-orange-500"></i> Bagikan Event
+          </h3>
+          <div class="flex gap-2">
+            <a href="#" onclick="copyLink(event)" class="w-full py-2.5 bg-orange-50 text-orange-600 rounded-xl text-center text-xs font-semibold hover:bg-orange-100 transition"><i class="fa fa-link mr-1"></i> Salin Tautan</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="bg-slate-900 text-white py-6">
+    <div class="max-w-6xl mx-auto px-4 md:px-6 text-center text-xs text-slate-500">
+      <p id="credit">&copy; 2026 PalembangPy — Komunitas Python Palembang. Seluruh hak dilindungi.</p>
+    </div>
+  </footer>
+
+  <script src="/js/event-detail.js"></script>
+  <script>
+      document.getElementById("credit").innerHTML = `&copy; 2025 - ${new Date().getFullYear()} PalembangPy &mdash; Komunitas Python Palembang. Seluruh hak dilindungi.`;
+    </script>
+</body>
+</html>

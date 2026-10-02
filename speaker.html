@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>PalembangPy — Speaker Area</title>
+  <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <style>
+    * { -webkit-tap-highlight-color: transparent; }
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: #f8fafc;
+      color: #0f172a;
+      padding-bottom: calc(72px + env(safe-area-inset-bottom));
+      min-height: 100vh;
+    }
+    .page { display: none; animation: fadeIn 0.3s ease; }
+    .page.active { display: block; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+    .nav-btn { transition: all 0.2s ease; }
+    .nav-btn.active { color: #7c3aed; }
+    .nav-btn.active .nav-icon { transform: translateY(-2px) scale(1.1); }
+    .nav-icon { transition: transform 0.2s ease; }
+    .card { background: #fff; border-radius: 1rem; border: 1px solid #e2e8f0; box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
+    .toast {
+      position: fixed; top: 16px; left: 50%; transform: translateX(-50%) translateY(-100px);
+      background: #0f172a; color: #fff; padding: 10px 20px; border-radius: 12px;
+      font-size: 13px; font-weight: 500; z-index: 100; transition: transform 0.3s ease;
+      max-width: 90%; text-align: center;
+    }
+    .toast.show { transform: translateX(-50%) translateY(0); }
+    .modal-overlay {
+      position: fixed; inset: 0; background: rgba(15,23,42,0.5); z-index: 90;
+      display: none; align-items: flex-end; justify-content: center;
+    }
+    .modal-overlay.show { display: flex; }
+    .modal-sheet {
+      background: #fff; width: 100%; max-width: 480px; border-radius: 1.25rem 1.25rem 0 0;
+      padding: 1.25rem; max-height: 85vh; overflow-y: auto;
+      animation: slideUp 0.3s ease; padding-bottom: calc(1.25rem + env(safe-area-inset-bottom));
+    }
+    @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+    .badge { display: inline-flex; align-items: center; padding: 2px 8px; border-radius: 9999px; font-size: 10px; font-weight: 700; }
+    .rating-stars { color: #f59e0b; letter-spacing: 1px; }
+    input, textarea { outline: none; }
+    input:focus, textarea:focus { border-color: #7c3aed !important; }
+  </style>
+</head>
+<body>
+
+  <div id="toast" class="toast"></div>
+
+  <!-- ==================== PAGE: BERANDA ==================== -->
+  <div id="page-home" class="page active px-4 pt-4">
+    <!-- Header -->
+    <div class="flex items-center justify-between mb-4">
+      <div>
+        <p class="text-xs text-slate-400" id="greetingText">Selamat datang</p>
+        <h1 class="text-lg font-extrabold" id="speakerName">Memuat...</h1>
+      </div>
+      <div class="w-11 h-11 rounded-full bg-gradient-to-br from-purple-500 to-violet-600 flex items-center justify-center text-white font-bold shadow-lg shadow-purple-500/30">TA</div>
+    </div>
+
+    <!-- Speaker Card -->
+    <div class="relative overflow-hidden rounded-2xl p-5 mb-4 text-white" style="background: linear-gradient(135deg, #7c3aed, #a855f7 50%, #c084fc);">
+      <div class="absolute -top-8 -right-8 w-32 h-32 rounded-full bg-white/10"></div>
+      <div class="absolute -bottom-10 -left-6 w-28 h-28 rounded-full bg-white/10"></div>
+      <div class="relative">
+        <div class="flex items-center justify-between mb-3">
+          <span class="text-[10px] uppercase tracking-widest opacity-80 font-semibold">Verified Speaker</span>
+          <span class="badge bg-white/20 text-white"><i class="fa fa-check-circle mr-1"></i>Terverifikasi</span>
+        </div>
+        <p class="text-xs opacity-80 mb-0.5">Spesialisasi</p>
+        <p class="text-sm font-bold">Backend Engineering · FastAPI · DevOps</p>
+        <div class="flex items-center justify-between mt-4">
+          <div>
+            <p class="text-[10px] opacity-70">Rating</p>
+            <p class="text-xl font-extrabold rating-stars">4.9 <span class="text-white text-xs font-normal opacity-80">/ 5.0</span></p>
+          </div>
+          <div class="text-right">
+            <p class="text-[10px] opacity-70">Total Sesi</p>
+            <p class="text-xl font-extrabold">12</p>
+          </div>
+          <div class="text-right">
+            <p class="text-[10px] opacity-70">Total Penonton</p>
+            <p class="text-xl font-extrabold">840</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Statistik -->
+    <div class="grid grid-cols-3 gap-2 mt-4 mb-4">
+      <div class="card p-3 text-center">
+        <p class="text-lg font-extrabold text-purple-500" id="statSessions">12</p>
+        <p class="text-[10px] text-slate-400">Sesi Selesai</p>
+      </div>
+      <div class="card p-3 text-center">
+        <p class="text-lg font-extrabold text-emerald-500" id="statMaterials">8</p>
+        <p class="text-[10px] text-slate-400">Materi Diunggah</p>
+      </div>
+      <div class="card p-3 text-center">
+        <p class="text-lg font-extrabold text-amber-500" id="statRating">4.9</p>
+        <p class="text-[10px] text-slate-400">Rating Rata-rata</p>
+      </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="grid grid-cols-4 gap-2 mb-5">
+      <button onclick="switchTab('sessions')" class="card p-3 flex flex-col items-center gap-1.5 active:scale-95 transition">
+        <div class="w-9 h-9 rounded-xl bg-purple-50 flex items-center justify-center text-purple-500"><i class="fa fa-calendar"></i></div>
+        <span class="text-[10px] font-medium text-slate-600 text-center">Sesi Saya</span>
+      </button>
+      <button onclick="switchTab('materials')" class="card p-3 flex flex-col items-center gap-1.5 active:scale-95 transition">
+        <div class="w-9 h-9 rounded-xl bg-emerald-50 flex items-center justify-center text-emerald-500"><i class="fa fa-file-text-o"></i></div>
+        <span class="text-[10px] font-medium text-slate-600 text-center">Materi</span>
+      </button>
+      <button onclick="openModal('upload')" class="card p-3 flex flex-col items-center gap-1.5 active:scale-95 transition">
+        <div class="w-9 h-9 rounded-xl bg-orange-50 flex items-center justify-center text-orange-500"><i class="fa fa-cloud-upload"></i></div>
+        <span class="text-[10px] font-medium text-slate-600 text-center">Upload</span>
+      </button>
+      <button onclick="switchTab('profile')" class="card p-3 flex flex-col items-center gap-1.5 active:scale-95 transition">
+        <div class="w-9 h-9 rounded-xl bg-blue-50 flex items-center justify-center text-blue-500"><i class="fa fa-user"></i></div>
+        <span class="text-[10px] font-medium text-slate-600 text-center">Profil</span>
+      </button>
+    </div>
+
+    <!-- Sesi Terdekat -->
+    <div class="flex items-center justify-between mb-3">
+      <h2 class="text-sm font-bold text-slate-800">Sesi Terdekat</h2>
+      <button onclick="switchTab('sessions')" class="text-xs font-medium text-purple-500">Lihat semua <i class="fa fa-angle-right"></i></button>
+    </div>
+    <div id="upcomingSession" class="card overflow-hidden"></div>
+  </div>
+
+  <!-- ==================== PAGE: SESI ==================== -->
+  <div id="page-sessions" class="page px-4 pt-4">
+    <h1 class="text-lg font-extrabold mb-1">Sesi Saya</h1>
+    <p class="text-[11px] text-slate-400 mb-4">Jadwal &amp; detail sesi pembicaraan Anda</p>
+
+    <div class="flex gap-2 overflow-x-auto pb-2 mb-3 -mx-4 px-4" style="scrollbar-width:none">
+      <button class="session-filter active px-3 py-1.5 rounded-full text-[11px] font-semibold whitespace-nowrap bg-purple-600 text-white" data-filter="all">Semua</button>
+      <button class="session-filter px-3 py-1.5 rounded-full text-[11px] font-semibold whitespace-nowrap bg-white border border-slate-200 text-slate-600" data-filter="upcoming">Akan Datang</button>
+      <button class="session-filter px-3 py-1.5 rounded-full text-[11px] font-semibold whitespace-nowrap bg-white border border-slate-200 text-slate-600" data-filter="done">Selesai</button>
+    </div>
+
+    <div id="sessionList" class="space-y-3"></div>
+  </div>
+
+  <!-- ==================== PAGE: MATERI ==================== -->
+  <div id="page-materials" class="page px-4 pt-4">
+    <div class="flex items-center justify-between mb-3">
+      <div>
+        <h1 class="text-lg font-extrabold">Materi Saya</h1>
+        <p class="text-[11px] text-slate-400">File presentasi &amp; dokumen pendukung</p>
+      </div>
+      <button onclick="openModal('upload')" class="w-9 h-9 rounded-xl bg-gradient-to-br from-purple-500 to-violet-600 text-white flex items-center justify-center shadow-lg shadow-purple-500/30 active:scale-90 transition"><i class="fa fa-plus"></i></button>
+    </div>
+
+    <div id="materialList" class="space-y-3"></div>
+  </div>
+
+  <!-- ==================== PAGE: PROFIL ==================== -->
+  <div id="page-profile" class="page px-4 pt-4">
+    <h1 class="text-lg font-extrabold mb-4">Profil Speaker</h1>
+
+    <div class="card p-5 mb-4 flex flex-col items-center text-center">
+      <div class="w-20 h-20 rounded-2xl bg-gradient-to-br from-purple-500 to-violet-600 flex items-center justify-center text-white text-2xl font-extrabold shadow-lg shadow-purple-500/30 mb-3">TA</div>
+      <h2 class="font-bold text-slate-800">Tomy Aliyansyah</h2>
+      <p class="text-xs text-slate-400">@tomy · Backend Engineer</p>
+      <span class="badge bg-emerald-100 text-emerald-600 mt-2"><i class="fa fa-check-circle mr-1"></i>Verified Speaker</span>
+    </div>
+
+    <div class="card divide-y divide-slate-100 mb-4">
+      <div class="p-3.5">
+        <p class="text-[10px] text-slate-400 uppercase tracking-wide font-semibold mb-1">Bio Singkat</p>
+        <p class="text-xs text-slate-600 leading-relaxed">Backend engineer dengan 6+ tahun pengalaman membangun sistem API skala produksi. Fokus pada FastAPI, arsitektur microservices, dan DevOps. Kontributor open-source.</p>
+      </div>
+      <div class="p-3.5">
+        <p class="text-[10px] text-slate-400 uppercase tracking-wide font-semibold mb-2">Keahlian</p>
+        <div class="flex flex-wrap gap-1.5">
+          <span class="px-2 py-1 bg-purple-50 text-purple-600 text-[10px] font-semibold rounded-lg">Python</span>
+          <span class="px-2 py-1 bg-purple-50 text-purple-600 text-[10px] font-semibold rounded-lg">FastAPI</span>
+          <span class="px-2 py-1 bg-purple-50 text-purple-600 text-[10px] font-semibold rounded-lg">Django</span>
+          <span class="px-2 py-1 bg-purple-50 text-purple-600 text-[10px] font-semibold rounded-lg">Docker</span>
+          <span class="px-2 py-1 bg-purple-50 text-purple-600 text-[10px] font-semibold rounded-lg">PostgreSQL</span>
+          <span class="px-2 py-1 bg-purple-50 text-purple-600 text-[10px] font-semibold rounded-lg">DevOps</span>
+        </div>
+      </div>
+      <div class="p-3.5">
+        <p class="text-[10px] text-slate-400 uppercase tracking-wide font-semibold mb-2">Sosial Media</p>
+        <div class="flex gap-3 text-slate-400 text-sm">
+          <a href="#" class="hover:text-purple-500"><i class="fa fa-github"></i> <span class="text-xs">github.com/tomy</span></a>
+        </div>
+        <div class="flex gap-3 text-slate-400 text-sm mt-2">
+          <a href="#" class="hover:text-purple-500"><i class="fa fa-linkedin"></i> <span class="text-xs">linkedin.com/in/tomy</span></a>
+        </div>
+      </div>
+    </div>
+
+    <button onclick="showToast('Edit profil — segera tersedia')" class="w-full p-3.5 card text-purple-600 text-xs font-semibold flex items-center justify-center gap-2 active:bg-purple-50 transition">
+      <i class="fa fa-pencil"></i> Edit Profil Speaker
+    </button>
+    <button onclick="logoutSpeaker()" class="w-full p-3.5 card text-red-500 text-xs font-semibold flex items-center justify-center gap-2 active:bg-red-50 transition mt-2">
+      <i class="fa fa-sign-out"></i> Keluar
+    </button>
+    <p class="text-center text-[10px] text-slate-300 mt-6">PalembangPy Speaker Area v1.0.0</p>
+  </div>
+
+  <!-- ==================== BOTTOM NAV ==================== -->
+  <nav class="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-xl border-t border-slate-200 z-50" style="padding-bottom: env(safe-area-inset-bottom);">
+    <div class="grid grid-cols-4 max-w-md mx-auto">
+      <button class="nav-btn active flex flex-col items-center gap-1 py-2.5 text-slate-400" data-tab="home" onclick="switchTab('home')">
+        <i class="fa fa-home nav-icon text-base"></i>
+        <span class="text-[10px] font-medium">Beranda</span>
+      </button>
+      <button class="nav-btn flex flex-col items-center gap-1 py-2.5 text-slate-400" data-tab="sessions" onclick="switchTab('sessions')">
+        <i class="fa fa-calendar nav-icon text-base"></i>
+        <span class="text-[10px] font-medium">Sesi</span>
+      </button>
+      <button class="nav-btn flex flex-col items-center gap-1 py-2.5 text-slate-400" data-tab="materials" onclick="switchTab('materials')">
+        <i class="fa fa-file-text-o nav-icon text-base"></i>
+        <span class="text-[10px] font-medium">Materi</span>
+      </button>
+      <button class="nav-btn flex flex-col items-center gap-1 py-2.5 text-slate-400" data-tab="profile" onclick="switchTab('profile')">
+        <i class="fa fa-user nav-icon text-base"></i>
+        <span class="text-[10px] font-medium">Profil</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ==================== MODAL ==================== -->
+  <div class="modal-overlay" id="modalOverlay" onclick="if(event.target===this)closeModal()">
+    <div class="modal-sheet">
+      <div class="w-10 h-1 bg-slate-200 rounded-full mx-auto mb-4"></div>
+      <div id="modalContent"></div>
+    </div>
+  </div>
+
+  <script>
+  (function () {
+    var API_URL = "https://api.palembangpy.org/v1";
+    var tg = window.Telegram ? window.Telegram.WebApp : null;
+    if (tg) { tg.ready(); tg.expand(); tg.setHeaderColor("#7c3aed"); }
+
+    // ===== DATA DEMO =====
+    var SESSIONS = [
+      { id:1, title:"Membangun REST API Production-Ready dengan FastAPI", event:"Workshop: REST API FastAPI", date:"28 Okt 2026", time:"09:30 – 11:30", location:"UIN Raden Fatah", duration:"120 menit", participants:30, status:"upcoming", color:"from-blue-500 to-indigo-600", icon:"fa-laptop", hasMaterial:false },
+      { id:2, title:"Python Fundamentals untuk Pemula", event:"Meetup #12", date:"15 Okt 2026", time:"19:00 – 20:00", location:"Cafe Kawan Lama", duration:"60 menit", participants:24, status:"upcoming", color:"from-orange-400 to-red-500", icon:"fa-code", hasMaterial:true },
+      { id:3, title:"Django Fundamentals: dari Nol ke Produksi", event:"Meetup #11", date:"10 Sep 2026", time:"19:00 – 20:30", location:"Co-Working Ampera", duration:"90 menit", participants:32, status:"done", rating:4.8, color:"from-purple-500 to-fuchsia-600", icon:"fa-code", hasMaterial:true },
+      { id:4, title:"Automasi Workflow dengan Python Scripting", event:"Workshop: Python Automation", date:"22 Agu 2026", time:"13:00 – 15:00", location:"Universitas Sriwijaya", duration:"120 menit", participants:28, status:"done", rating:5.0, color:"from-emerald-500 to-teal-600", icon:"fa-cogs", hasMaterial:true }
+    ];
+    var MATERIALS = [
+      { id:1, title:"Slide: Django Fundamentals.pdf", session:"Meetup #11", size:"2.4 MB", type:"pdf", date:"10 Sep 2026", downloads:28 },
+      { id:2, title:"Starter Kit: FastAPI.zip", session:"Workshop FastAPI", size:"1.1 MB", type:"zip", date:"20 Agu 2026", downloads:45 },
+      { id:3, title:"Cheat Sheet: Python Automation.pdf", session:"Workshop Automation", size:"890 KB", type:"pdf", date:"22 Agu 2026", downloads:31 },
+      { id:4, title:"Contoh Kode: REST API.pptx", session:"Meetup #10", size:"3.2 MB", type:"pptx", date:"05 Jul 2026", downloads:19 }
+    ];
+
+    function showToast(msg) {
+      var t = document.getElementById("toast");
+      t.textContent = msg; t.classList.add("show");
+      setTimeout(function(){ t.classList.remove("show"); }, 2500);
+      if (tg && tg.HapticFeedback) tg.HapticFeedback.notificationOccurred("success");
+    }
+    function fileIcon(type) {
+      if (type === "pdf") return { icon:"fa-file-pdf-o", color:"text-red-500", bg:"bg-red-50" };
+      if (type === "zip") return { icon:"fa-file-archive-o", color:"text-amber-500", bg:"bg-amber-50" };
+      if (type === "pptx") return { icon:"fa-file-powerpoint-o", color:"text-orange-500", bg:"bg-orange-50" };
+      return { icon:"fa-file-o", color:"text-slate-500", bg:"bg-slate-50" };
+    }
+
+    window.switchTab = function(tab) {
+      document.querySelectorAll(".page").forEach(function(p){ p.classList.remove("active"); });
+      document.querySelectorAll(".nav-btn").forEach(function(b){ b.classList.remove("active"); });
+      document.getElementById("page-"+tab).classList.add("active");
+      document.querySelector('.nav-btn[data-tab="'+tab+'"]').classList.add("active");
+      if (tg && tg.HapticFeedback) tg.HapticFeedback.selectionChanged();
+      window.scrollTo(0,0);
+    };
+
+    // ===== UPCOMING SESSION (home) =====
+    function loadUpcoming() {
+      var ev = SESSIONS.find(function(s){ return s.status === "upcoming"; });
+      if (!ev) { document.getElementById("upcomingSession").innerHTML = '<div class="p-5 text-center text-slate-400 text-xs"><i class="fa fa-calendar-check-o text-3xl mb-2 block"></i>Tidak ada sesi mendatang</div>'; return; }
+      var html = '<div class="relative h-24 bg-gradient-to-br ' + ev.color + ' overflow-hidden">';
+      html += '<div class="absolute inset-0 flex items-center justify-center"><i class="fa ' + ev.icon + ' text-white text-4xl opacity-25"></i></div>';
+      html += '<div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-3 text-white">';
+      html += '<p class="text-[10px] opacity-80"><i class="fa fa-calendar-o mr-1"></i>' + ev.date + ' · ' + ev.time + '</p>';
+      html += '<h3 class="font-bold text-xs mt-0.5">' + ev.title + '</h3></div></div>';
+      html += '<div class="p-3 flex items-center justify-between">';
+      html += '<div><p class="text-[10px] text-slate-400"><i class="fa fa-map-marker mr-1"></i>' + ev.location + '</p><p class="text-[10px] text-slate-400 mt-0.5"><i class="fa fa-users mr-1"></i>' + ev.participants + ' peserta · ' + ev.duration + '</p></div>';
+      if (!ev.hasMaterial) html += '<button onclick="openModal(\'upload\',' + ev.id + ')" class="px-3 py-1.5 bg-purple-50 text-purple-600 text-[10px] font-bold rounded-lg active:scale-95 transition"><i class="fa fa-upload mr-1"></i>Upload Materi</button>';
+      else html += '<span class="px-3 py-1.5 bg-emerald-50 text-emerald-600 text-[10px] font-bold rounded-lg"><i class="fa fa-check mr-1"></i>Materi OK</span>';
+      html += '</div>';
+      document.getElementById("upcomingSession").innerHTML = html;
+    }
+
+    // ===== SESSION LIST =====
+    var currentSessionFilter = "all";
+    function renderSessions() {
+      var list = SESSIONS.filter(function(s){
+        if (currentSessionFilter === "all") return true;
+        return s.status === currentSessionFilter;
+      });
+      var html = "";
+      list.forEach(function(s) {
+        var statusBadge = s.status === "upcoming"
+          ? '<span class="badge bg-emerald-100 text-emerald-600"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-1 animate-pulse"></span>AKAN DATANG</span>'
+          : '<span class="badge bg-slate-100 text-slate-500">SELESAI' + (s.rating ? ' · ' + s.rating + '★' : '') + '</span>';
+        html += '<div class="card overflow-hidden">';
+        html += '<div class="flex">';
+        html += '<div class="w-16 bg-gradient-to-br ' + s.color + ' flex items-center justify-center text-white shrink-0"><i class="fa ' + s.icon + ' text-xl opacity-70"></i></div>';
+        html += '<div class="flex-1 p-3 min-w-0">';
+        html += '<div class="flex items-start justify-between gap-2">' + statusBadge + '</div>';
+        html += '<h3 class="text-xs font-bold text-slate-800 mt-1 leading-snug">' + s.title + '</h3>';
+        html += '<p class="text-[10px] text-purple-500 font-medium mt-0.5">' + s.event + '</p>';
+        html += '<p class="text-[10px] text-slate-400 mt-1"><i class="fa fa-calendar-o mr-1"></i>' + s.date + ' · ' + s.time + '</p>';
+        html += '<p class="text-[10px] text-slate-400"><i class="fa fa-map-marker mr-1"></i>' + s.location + ' · <i class="fa fa-clock-o ml-1 mr-1"></i>' + s.duration + '</p>';
+        html += '</div></div>';
+        html += '<div class="flex border-t border-slate-100">';
+        html += '<button onclick="openModal(\'upload\',' + s.id + ')" class="flex-1 py-2.5 text-[11px] font-semibold text-purple-600 active:bg-purple-50 transition flex items-center justify-center gap-1"><i class="fa fa-cloud-upload"></i> ' + (s.hasMaterial ? 'Ganti Materi' : 'Upload Materi') + '</button>';
+        html += '<div class="w-px bg-slate-100"></div>';
+        html += '<button onclick="showToast(\'Detail sesi: ' + s.title + '\')" class="flex-1 py-2.5 text-[11px] font-semibold text-blue-600 active:bg-blue-50 transition flex items-center justify-center gap-1"><i class="fa fa-eye"></i> Detail</button>';
+        html += '</div></div>';
+      });
+      if (list.length === 0) html = '<div class="text-center py-10 text-slate-400"><i class="fa fa-calendar-times-o text-3xl mb-2 block"></i><p class="text-xs">Tidak ada sesi</p></div>';
+      document.getElementById("sessionList").innerHTML = html;
+    }
+    document.querySelectorAll(".session-filter").forEach(function(chip) {
+      chip.addEventListener("click", function() {
+        document.querySelectorAll(".session-filter").forEach(function(c){ c.classList.remove("active","bg-purple-600","text-white"); c.classList.add("bg-white","border","border-slate-200","text-slate-600"); });
+        chip.classList.add("active","bg-purple-600","text-white"); chip.classList.remove("bg-white","border","border-slate-200","text-slate-600");
+        currentSessionFilter = chip.getAttribute("data-filter"); renderSessions();
+      });
+    });
+
+    // ===== MATERIAL LIST =====
+    function renderMaterials() {
+      var html = "";
+      MATERIALS.forEach(function(m) {
+        var fi = fileIcon(m.type);
+        html += '<div class="card p-3.5 flex items-center gap-3">';
+        html += '<div class="w-11 h-11 rounded-xl ' + fi.bg + ' flex items-center justify-center ' + fi.color + ' shrink-0"><i class="fa ' + fi.icon + ' text-lg"></i></div>';
+        html += '<div class="flex-1 min-w-0">';
+        html += '<h3 class="text-xs font-bold text-slate-800 truncate">' + m.title + '</h3>';
+        html += '<p class="text-[10px] text-slate-400 mt-0.5">' + m.session + ' · ' + m.size + '</p>';
+        html += '<p class="text-[10px] text-purple-500 font-medium mt-0.5"><i class="fa fa-download mr-1"></i>' + m.downloads + ' kali diunduh</p>';
+        html += '</div>';
+        html += '<button onclick="deleteMaterial(' + m.id + ')" class="w-8 h-8 rounded-lg bg-red-50 text-red-500 flex items-center justify-center shrink-0 active:scale-90 transition"><i class="fa fa-trash text-xs"></i></button>';
+        html += '</div>';
+      });
+      document.getElementById("materialList").innerHTML = html;
+    }
+    window.deleteMaterial = function(id) {
+      if (tg && tg.showConfirm) {
+        tg.showConfirm("Hapus materi ini?", function(ok){
+          if (ok) { MATERIALS = MATERIALS.filter(function(m){ return m.id !== id; }); renderMaterials(); showToast("Materi dihapus"); }
+        });
+      } else { MATERIALS = MATERIALS.filter(function(m){ return m.id !== id; }); renderMaterials(); showToast("Materi dihapus (demo)"); }
+    };
+
+    // ===== MODAL UPLOAD =====
+    window.openModal = function(type, sessionId) {
+      var c = document.getElementById("modalContent");
+      var html = '<h3 class="text-sm font-bold text-slate-800 mb-3">Upload Materi Presentasi</h3>';
+      html += '<div class="space-y-3">';
+      html += '<div><label class="text-[10px] font-semibold text-slate-500 uppercase tracking-wide">Pilih Sesi</label><select class="w-full mt-1 px-3 py-2.5 text-xs border border-slate-200 rounded-lg bg-white">';
+      SESSIONS.forEach(function(s){ html += '<option value="'+s.id+'"' + (sessionId===s.id?' selected':'') + '>' + s.title + '</option>'; });
+      html += '</select></div>';
+      html += '<div><label class="text-[10px] font-semibold text-slate-500 uppercase tracking-wide">Judul Materi</label><input type="text" placeholder="Contoh: Slide FastAPI Part 1" class="w-full mt-1 px-3 py-2.5 text-xs border border-slate-200 rounded-lg"></div>';
+      html += '<div><label class="text-[10px] font-semibold text-slate-500 uppercase tracking-wide">Deskripsi (opsional)</label><textarea rows="2" placeholder="Ringkasan isi materi..." class="w-full mt-1 px-3 py-2.5 text-xs border border-slate-200 rounded-lg resize-none"></textarea></div>';
+      html += '<div><label class="text-[10px] font-semibold text-slate-500 uppercase tracking-wide">File (PDF/PPTX/ZIP, maks 10MB)</label><div class="mt-1 border-2 border-dashed border-slate-200 rounded-lg p-5 text-center cursor-pointer hover:border-purple-300 hover:bg-purple-50/50 transition" onclick="document.getElementById(\'matFile\').click()"><i class="fa fa-cloud-upload text-3xl text-slate-300 mb-2 block"></i><p class="text-[11px] text-slate-400">Ketuk untuk memilih file</p><input type="file" id="matFile" class="hidden" accept=".pdf,.ppt,.pptx,.zip"><p id="matFileName" class="text-[10px] text-purple-500 font-medium mt-1 hidden"></p></div></div>';
+      html += '<div class="bg-purple-50 border border-purple-200 rounded-lg p-3 text-[11px] text-purple-700"><i class="fa fa-info-circle mr-1"></i> Materi akan dapat diunduh oleh peserta setelah sesi selesai. Pastikan tidak ada data sensitif.</div>';
+      html += '<button onclick="closeModal();showToast(\'Materi berhasil diunggah!\')" class="w-full py-3 bg-gradient-to-r from-purple-500 to-violet-600 text-white text-xs font-bold rounded-xl shadow-lg shadow-purple-500/30 active:scale-95 transition"><i class="fa fa-upload mr-1"></i> Unggah Sekarang</button>';
+      html += '</div>';
+      c.innerHTML = html;
+      document.getElementById("modalOverlay").classList.add("show");
+      var fi = document.getElementById("matFile");
+      if (fi) fi.addEventListener("change", function(){
+        var fn = document.getElementById("matFileName");
+        if (this.files.length > 0) { fn.textContent = this.files[0].name + " (" + Math.round(this.files[0].size/1024) + " KB)"; fn.classList.remove("hidden"); }
+      });
+      if (tg && tg.HapticFeedback) tg.HapticFeedback.selectionChanged();
+    };
+    window.closeModal = function() { document.getElementById("modalOverlay").classList.remove("show"); };
+
+    window.logoutSpeaker = function() {
+      if (tg && tg.showConfirm) { tg.showConfirm("Yakin keluar?", function(ok){ if(ok) tg.close(); }); }
+      else showToast("Berhasil keluar");
+    };
+
+    // ===== INIT =====
+    var h = new Date().getHours();
+    var greet = h < 11 ? "Selamat pagi" : h < 15 ? "Selamat siang" : h < 19 ? "Selamat sore" : "Selamat malam";
+    var gt = document.getElementById("greetingText");
+    if (gt) gt.textContent = greet + ",";
+    var sn = document.getElementById("speakerName");
+    if (sn) sn.textContent = "Tomy Aliyansyah";
+    loadUpcoming();
+    renderSessions();
+    renderMaterials();
+  })();
+  </script>
+
+</body>
+</html>

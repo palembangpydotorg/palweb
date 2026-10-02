@@ -1,0 +1,14 @@
+@import "tailwindcss";
+
+/* Custom theme kamu (gradient oranye-merah, font Inter, dll) */
+@theme {
+  --color-primary: #ff7b00;
+  --color-secondary: #ff4757;
+  --color-accent: #c44569;
+  --font-sans: "Inter", system-ui, sans-serif;
+}
+
+/* Custom styles tambahan (kalau ada) */
+body {
+  font-family: "Inter", system-ui, sans-serif;
+}

@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ketentuan &amp; Pedoman — PalembangPy</title>
+  <link rel="shortcut icon" href="/img/palembangpy.png" type="image/x-icon" />
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', system-ui, -apple-system, sans-serif; }
+    .text-gradient-ampera {
+      background: linear-gradient(135deg, #ff7b00 0%, #ff4757 50%, #c44569 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .tab-btn { transition: all 0.25s ease; }
+    .tab-btn.active {
+      background: linear-gradient(135deg, #ff7b00, #ff4757);
+      color: #fff;
+      box-shadow: 0 8px 20px -6px rgba(255, 71, 87, 0.45);
+    }
+    .tab-panel { display: none; animation: fadeIn 0.4s ease; }
+    .tab-panel.active { display: block; }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .legal-content h3 { font-weight: 700; color: #1e293b; margin-top: 1.5rem; margin-bottom: 0.5rem; font-size: 1.05rem; }
+    .legal-content h3:first-child { margin-top: 0; }
+    .legal-content p { color: #475569; font-size: 0.9rem; line-height: 1.75; margin-bottom: 0.75rem; }
+    .legal-content ul { color: #475569; font-size: 0.9rem; line-height: 1.75; margin-bottom: 0.75rem; padding-left: 1.25rem; list-style-type: disc; }
+    .legal-content li { margin-bottom: 0.35rem; }
+    .legal-content strong { color: #1e293b; font-weight: 600; }
+    .legal-content .note {
+      background: #fff7ed; border-left: 3px solid #ff7b00;
+      padding: 0.75rem 1rem; border-radius: 0 0.5rem 0.5rem 0;
+      font-size: 0.85rem; color: #9a3412; margin: 1rem 0;
+    }
+  </style>
+</head>
+<body class="bg-slate-50 overflow-x-hidden">
+
+  <!-- NAVBAR -->
+  <nav class="sticky top-0 z-50 bg-white/85 backdrop-blur-xl border-b border-orange-100">
+    <div class="max-w-5xl mx-auto px-4 md:px-6 py-3 flex items-center justify-between">
+      <a href="index.html" class="flex items-center gap-2">
+        <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-orange-500 to-red-500 flex items-center justify-center shadow-lg shadow-orange-500/30">
+          <i class="fa fa-code text-white text-sm"></i>
+        </div>
+        <span class="font-bold text-slate-800">PalembangPy</span>
+      </a>
+      <a href="index.html" class="text-sm font-medium text-slate-500 hover:text-orange-600 transition flex items-center gap-1.5">
+        <i class="fa fa-arrow-left text-xs"></i> Kembali
+      </a>
+    </div>
+  </nav>
+
+  <!-- HEADER -->
+  <header class="bg-gradient-to-br from-orange-500 via-red-500 to-rose-600 text-white py-10 md:py-14">
+    <div class="max-w-5xl mx-auto px-4 md:px-6 text-center">
+      <div class="inline-flex items-center gap-2 px-3 py-1.5 bg-white/15 backdrop-blur-md rounded-full text-[10px] md:text-xs font-medium mb-4 border border-white/20">
+        <i class="fa fa-gavel mr-1"></i> Dokumen Legal Komunitas
+      </div>
+      <h1 class="text-2xl md:text-4xl font-extrabold mb-2">Ketentuan &amp; Pedoman</h1>
+      <p class="text-sm md:text-base text-white/80 max-w-xl mx-auto">
+        Seluruh aturan, kode etik, dan panduan berkontribusi dalam satu halaman.
+        Pilih tab di bawah untuk membaca dokumen yang relevan.
+      </p>
+      <p class="text-[11px] text-white/60 mt-4">Terakhir diperbarui: 30 September 2026</p>
+    </div>
+  </header>
+
+  <!-- TAB NAVIGATION -->
+  <div class="max-w-5xl mx-auto px-4 md:px-6 -mt-6 relative z-10">
+    <div class="bg-white rounded-2xl shadow-lg border border-slate-100 p-2 flex flex-wrap gap-1.5 justify-center">
+      <button class="tab-btn active px-4 py-2.5 rounded-xl text-xs md:text-sm font-semibold text-slate-600 hover:bg-orange-50 flex items-center gap-1.5" data-tab="tos">
+        <i class="fa fa-file-text-o"></i> Layanan
+      </button>
+      <button class="tab-btn px-4 py-2.5 rounded-xl text-xs md:text-sm font-semibold text-slate-600 hover:bg-orange-50 flex items-center gap-1.5" data-tab="toc">
+        <i class="fa fa-list-alt"></i> Tata Tertib
+      </button>
+      <button class="tab-btn px-4 py-2.5 rounded-xl text-xs md:text-sm font-semibold text-slate-600 hover:bg-orange-50 flex items-center gap-1.5" data-tab="tor">
+        <i class="fa fa-sitemap"></i> Acuan
+      </button>
+      <button class="tab-btn px-4 py-2.5 rounded-xl text-xs md:text-sm font-semibold text-slate-600 hover:bg-orange-50 flex items-center gap-1.5" data-tab="coc">
+        <i class="fa fa-shield"></i> Kode Etik
+      </button>
+      <button class="tab-btn px-4 py-2.5 rounded-xl text-xs md:text-sm font-semibold text-slate-600 hover:bg-orange-50 flex items-center gap-1.5" data-tab="cfs">
+        <i class="fa fa-microphone"></i> Pemateri
+      </button>
+      <button class="tab-btn px-4 py-2.5 rounded-xl text-xs md:text-sm font-semibold text-slate-600 hover:bg-orange-50 flex items-center gap-1.5" data-tab="contribute">
+        <i class="fa fa-handshake-o"></i> Kontribusi
+      </button>
+    </div>
+  </div>
+
+  <!-- KONTEN TAB -->
+  <main class="max-w-5xl mx-auto px-4 md:px-6 py-8 md:py-10">
+    <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 md:p-10">
+
+      <!-- ========== TAB 1: ToS ========== -->
+      <section id="tos" class="tab-panel active legal-content">
+        <div class="flex items-center gap-3 mb-5 pb-4 border-b border-slate-100">
+          <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-orange-500 to-red-500 flex items-center justify-center text-white text-lg shadow-md shadow-orange-500/25">
+            <i class="fa fa-file-text-o"></i>
+          </div>
+          <div>
+            <h2 class="text-xl md:text-2xl font-bold text-slate-800">Syarat Layanan</h2>
+            <p class="text-xs text-slate-400">Mengatur hubungan hukum antara Pengguna dan Penyelenggara Platform</p>
+          </div>
+        </div>
+
+        <h3>1. Penerimaan Syarat</h3>
+        <p>Dengan mengakses dan menggunakan platform PalembangPy, termasuk namun tidak terbatas pada pendaftaran akun, pendaftaran event, dan pengunduhan sertifikat, <strong>Pengguna menyatakan telah membaca, memahami, dan menyetujui seluruh ketentuan</strong> dalam dokumen ini. Apabila Pengguna tidak menyetujui salah satu ketentuan, maka Pengguna tidak diperkenankan menggunakan layanan.</p>
+
+        <h3>2. Akun Pengguna</h3>
+        <ul>
+          <li>Pendaftaran akun <strong>hanya dapat dilakukan melalui bot Telegram resmi</strong> PalembangPy. Pendaftaran melalui formulir web tidak tersedia.</li>
+          <li>Pengguna bertanggung jawab penuh atas <strong>kerahasiaan kredensial</strong> (token akses dan password) akunnya.</li>
+          <li>Setiap aktivitas yang terjadi di bawah akun Pengguna menjadi tanggung jawab Pengguna sepenuhnya.</li>
+          <li>Pengguna wajib memberikan data yang akurat dan memperbarui data apabila terjadi perubahan.</li>
+        </ul>
+
+        <h3>3. Penggunaan Layanan</h3>
+        <p>Pengguna setuju untuk tidak menggunakan layanan untuk tujuan yang melanggar hukum, merugikan pihak lain, atau mengganggu operasional platform. Dilarang melakukan <strong>reverse engineering, scraping otomatis, atau serangan DDoS</strong> terhadap infrastruktur PalembangPy.</p>
+
+        <h3>4. Kekayaan Intelektual</h3>
+        <p>Seluruh konten pada platform, termasuk materi presentasi, desain grafis, logo, dan sertifikat, dilindungi oleh hak kekayaan intelektual. <strong>Pengguna tidak diperkenankan mendistribusikan ulang</strong> materi tersebut tanpa izin tertulis dari pemilik hak cipta.</p>
+
+        <h3>5. Batasan Tanggung Jawab</h3>
+        <p>Platform disediakan secara <strong>"what you see is what you get"</strong> tanpa jaminan tersirat. PalembangPy tidak bertanggung jawab atas kerugian tidak langsung, insidental, atau konsekuensial akibat penggunaan atau ketidaktersediaan layanan.</p>
+
+        <h3>6. Perubahan Syarat</h3>
+        <p>Penyelenggara berhak mengubah ketentuan ini sewaktu-waktu. Perubahan akan diinformasikan melalui kanal resmi Telegram dan/atau email. <strong>Penggunaan layanan secara berkelanjutan setelah perubahan dianggap sebagai persetujuan</strong> terhadap ketentuan yang telah diperbarui.</p>
+
+        <h3>7. Hukum yang Berlaku</h3>
+        <p>Ketentuan ini tunduk pada hukum Negara Republik Indonesia. Segala sengketa akan diselesaikan secara musyawarah terlebih dahulu, dan apabila tidak tercapai kesepakatan, akan diselesaikan melalui pengadilan yang berwenang di wilayah Palembang.</p>
+
+        <div class="note"><strong>Catatan:</strong> Dokumen ini merupakan template awal. Sebelum digunakan secara resmi, disarankan untuk ditinjau oleh ahli hukum yang kompeten.</div>
+      </section>
+
+      <!-- ========== TAB 2: ToC ========== -->
+      <section id="toc" class="tab-panel legal-content">
+        <div class="flex items-center gap-3 mb-5 pb-4 border-b border-slate-100">
+          <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white text-lg shadow-md shadow-blue-500/25">
+            <i class="fa fa-list-alt"></i>
+          </div>
+          <div>
+            <h2 class="text-xl md:text-2xl font-bold text-slate-800">Tata Tertib Komunitas</h2>
+            <p class="text-xs text-slate-400">Aturan perilaku seluruh anggota dalam ruang lingkup komunitas</p>
+          </div>
+        </div>
+
+        <h3>1. Aturan Umum</h3>
+        <ul>
+          <li>Setiap anggota wajib <strong>menghormati perbedaan</strong> pendapat, latar belakang, dan tingkat keahlian.</li>
+          <li>Diskusi difokuskan pada topik teknologi, pemrograman Python, dan pengembangan diri.</li>
+          <li>Dilarang menyebarkan informasi yang <strong>menyesatkan, hoaks, atau tidak terverifikasi</strong>.</li>
+          <li>Spam, promosi berlebihan, dan iklan tidak relevan dilarang di seluruh kanal komunikasi.</li>
+        </ul>
+
+        <h3>2. Larangan Khusus</h3>
+        <ul>
+          <li><strong>Pelecehan verbal atau tertulis</strong> dalam bentuk apa pun, termasuk namun tidak terbatas pada SARA, gender, dan disabilitas.</li>
+          <li>Berbagi materi berhak cipta tanpa izin (bajakan, crack, serial number).</li>
+          <li>Mengungkapkan data pribadi orang lain (<em>doxing</em>) tanpa persetujuan.</li>
+          <li>Menggunakan identitas palsu atau menyamar sebagai pengurus.</li>
+        </ul>
+
+        <h3>3. Tingkat Sanksi</h3>
+        <p>Pelanggaran tata tertib akan dikenakan sanksi bertingkat sesuai tingkat keparahan:</p>
+        <ul>
+          <li><strong>Teguran lisan/tulis</strong> — untuk pelanggaran ringan pertama kali.</li>
+          <li><strong>Peringatan tertulis</strong> — untuk pelanggaran berulang atau sedang.</li>
+          <li><strong>Suspensi sementara</strong> (7–30 hari) — pencabutan akses platform dan grup.</li>
+          <li><strong>Pemecatan permanen</strong> — penghapusan akun dan larangan bergabung kembali.</li>
+        </ul>
+
+        <h3>4. Proses Banding</h3>
+        <p>Anggota yang dikenakan sanksi berhak mengajukan banding secara tertulis kepada pengurus paling lambat <strong>7 hari kalender</strong> sejak sanksi diberlakukan. Pengurus akan memproses banding paling lambat 14 hari kerja dan memberikan keputusan final secara tertulis.</p>
+
+        <h3>5. Pengawasan</h3>
+        <p>Pengurus komunitas berwenang memantau aktivitas di seluruh kanal resmi. Laporan pelanggaran dapat diajukan melalui bot Telegram resmi dengan menyertakan bukti yang relevan.</p>
+      </section>
+
+      <!-- ========== TAB 3: ToR ========== -->
+      <section id="tor" class="tab-panel legal-content">
+        <div class="flex items-center gap-3 mb-5 pb-4 border-b border-slate-100">
+          <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center text-white text-lg shadow-md shadow-emerald-500/25">
+            <i class="fa fa-sitemap"></i>
+          </div>
+          <div>
+            <h2 class="text-xl md:text-2xl font-bold text-slate-800">Ketentuan Acuan</h2>
+            <p class="text-xs text-slate-400">Ruang lingkup, peran, dan mekanisme penyelenggaraan kegiatan komunitas</p>
+          </div>
+        </div>
+
+        <h3>1. Ruang Lingkup</h3>
+        <p>Dokumen ini mengatur <strong>kerangka kerja penyelenggaraan kegiatan</strong> PalembangPy, meliputi meetup rutin, workshop, konferensi, dan kegiatan kolaborasi lainnya. ToR menjadi acuan bagi seluruh pihak yang terlibat: pengurus, panitia, pembicara, sponsor, dan peserta.</p>
+
+        <h3>2. Peran &amp; Tanggung Jawab</h3>
+        <ul>
+          <li><strong>Pengurus Inti</strong> — menetapkan arah strategis, menyetujui anggaran, dan bertanggung jawab atas reputasi komunitas.</li>
+          <li><strong>Panitia Acara</strong> — merencanakan dan melaksanakan teknis acara, meliputi konsumsi, venue, dokumentasi, dan registrasi peserta.</li>
+          <li><strong>Pembicara (Speaker)</strong> — menyampaikan materi sesuai topik yang disepakati, menyerahkan materi paling lambat H-3 acara, dan mengisi sesi tanya jawab.</li>
+          <li><strong>Peserta</strong> — mendaftar melalui platform resmi, hadir tepat waktu, dan berpartisipasi aktif sesuai ketentuan acara.</li>
+          <li><strong>Sponsor/Partner</strong> — memberikan dukungan sesuai kesepakatan MoU dan mematuhi ketentuan branding yang berlaku.</li>
+        </ul>
+
+        <h3>3. Mekanisme Penyelenggaraan</h3>
+        <ul>
+          <li>Setiap kegiatan wajib memiliki <strong>Proposal Kegiatan</strong> yang disetujui pengurus paling lambat H-14.</li>
+          <li>Pendaftaran peserta dilakukan secara eksklusif melalui platform resmi PalembangPy.</li>
+          <li>Panitia wajib membuat <strong>Berita Acara</strong> paling lambat H+3 setelah kegiatan berlangsung.</li>
+          <li>Sertifikat keikutsertaan diterbitkan otomatis oleh sistem bagi peserta yang memenuhi syarat kehadiran minimal 80%.</li>
+        </ul>
+
+        <h3>4. Dokumentasi &amp; Pelaporan</h3>
+        <p>Seluruh kegiatan didokumentasikan dalam bentuk foto, video, dan ringkasan materi. Dokumentasi menjadi aset komunitas dan dapat dipublikasikan melalui kanal resmi. Peserta yang tidak ingin tampil dalam dokumentasi wajib memberitahukan secara tertulis sebelum acara dimulai.</p>
+
+        <h3>5. Evaluasi</h3>
+        <p>Setiap kegiatan dievaluasi melalui survei peserta dan rapat evaluasi panitia. Hasil evaluasi menjadi bahan perbaikan berkelanjutan (<em>continuous improvement</em>) dan dilaporkan dalam rapat pengurus bulanan.</p>
+      </section>
+
+      <!-- ========== TAB 4: CoC ========== -->
+      <section id="coc" class="tab-panel legal-content">
+        <div class="flex items-center gap-3 mb-5 pb-4 border-b border-slate-100">
+          <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-purple-500 to-violet-600 flex items-center justify-center text-white text-lg shadow-md shadow-purple-500/25">
+            <i class="fa fa-shield"></i>
+          </div>
+          <div>
+            <h2 class="text-xl md:text-2xl font-bold text-slate-800">Kode Etik</h2>
+            <p class="text-xs text-slate-400">Komitmen kami menciptakan lingkungan yang aman dan inklusif</p>
+          </div>
+        </div>
+
+        <h3>1. Komitmen Kami</h3>
+        <p>Untuk menciptakan lingkungan yang terbuka dan ramah, kami sebagai penyelenggara dan peserta berkomitmen membuat <strong>partisipasi dalam komunitas bebas dari pelecehan</strong> untuk semua orang, tanpa memandang usia, ukuran tubuh, disabilitas, etnis, identitas dan ekspresi gender, tingkat pengalaman, pendidikan, status sosial ekonomi, kewarganegaraan, penampilan pribadi, ras, agama, atau orientasi seksual.</p>
+
+        <h3>2. Standar Perilaku yang Diharapkan</h3>
+        <ul>
+          <li><strong>Berempati dan baik hati</strong> terhadap anggota lain.</li>
+          <li>Menghormati pendapat, sudut pandang, dan pengalaman yang berbeda.</li>
+          <li>Memberikan dan menerima <strong>umpan balik yang membangun</strong> dengan lapang dada.</li>
+          <li>Bertanggung jawab atas kata-kata dan perbuatan sendiri.</li>
+          <li>Fokus pada apa yang terbaik bukan hanya untuk diri sendiri, tetapi untuk komunitas secara keseluruhan.</li>
+        </ul>
+
+        <h3>3. Perilaku yang Tidak Dapat Diterima</h3>
+        <ul>
+          <li>Penggunaan bahasa atau citra seksual, serta perhatian atau ajakan seksual dalam bentuk apa pun.</li>
+          <li><strong>Trolling, komentar menghina/merendahkan</strong>, dan serangan pribadi atau politik.</li>
+          <li>Pelecehan publik atau pribadi.</li>
+          <li>Penerbitan informasi pribadi orang lain tanpa izin eksplisit.</li>
+          <li>Perilaku lain yang dapat dianggap tidak pantas dalam lingkungan profesional.</li>
+        </ul>
+
+        <h3>4. Penegakan</h3>
+        <p>Pengurus komunitas berhak dan bertanggung jawab untuk menghapus, mengedit, atau menolak komentar, konten, dan kontribusi lain yang tidak sesuai dengan Kode Etik ini, serta akan mengkomunikasikan alasan tindakan moderasi apabila dianggap perlu. <strong>Keputusan pengurus bersifat final dan mengikat.</strong></p>
+
+        <h3>5. Pelaporan</h3>
+        <p>Apabila Anda mengalami atau menyaksikan perilaku yang tidak dapat diterima, silakan laporkan kepada pengurus melalui: (1) pesan pribadi ke pengurus di Telegram, atau (2) email resmi <strong>hello@palembangpy.or.id</strong>. Seluruh laporan akan ditinjau dan diselidiki secara rahasia, dan pelapor akan mendapatkan tanggapan dalam waktu paling lambat 48 jam.</p>
+
+        <div class="note"><strong>Adaptasi:</strong> Kode Etik ini diadaptasi dari <em>Contributor Covenant</em> versi 2.1, dengan penyesuaian konteks komunitas lokal.</div>
+      </section>
+
+      <!-- ========== TAB 5: CfS/CfP ========== -->
+      <section id="cfs" class="tab-panel legal-content">
+        <div class="flex items-center gap-3 mb-5 pb-4 border-b border-slate-100">
+          <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-rose-500 to-pink-600 flex items-center justify-center text-white text-lg shadow-md shadow-rose-500/25">
+            <i class="fa fa-microphone"></i>
+          </div>
+          <div>
+            <h2 class="text-xl md:text-2xl font-bold text-slate-800">Pedoman Pemateri</h2>
+            <p class="text-xs text-slate-400">Ajukan topik pembicaraan Anda untuk meetup rutin PalembangPy</p>
+          </div>
+        </div>
+
+        <p>PalembangPy secara rutin membuka kesempatan bagi <strong>praktisi, akademisi, dan enthusiast</strong> untuk menjadi pembicara pada meetup reguler dan acara khusus. Kami menerima pengajuan topik dalam berbagai kategori, dari dasar hingga teknologi terkini. <strong>Ajukan proposal Anda sekarang</strong> dan bagikan pengetahuan Anda kepada komunitas.</p>
+
+        <h3>Kategori Topik yang Diterima</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 my-4">
+          <!-- Kategori 1 -->
+          <div class="rounded-xl border border-sky-200 bg-sky-50/60 p-4">
+            <div class="flex items-center gap-2 mb-2">
+              <div class="w-8 h-8 rounded-lg bg-sky-500 flex items-center justify-center text-white text-sm">
+                <i class="fa fa-book"></i>
+              </div>
+              <h4 class="font-bold text-slate-800 text-sm">Fundamental &amp; Core Concepts</h4>
+            </div>
+            <ul class="text-xs space-y-1 text-slate-600 m-0 pl-4">
+              <li>Python Fundamentals for Beginners</li>
+              <li>Web Development (Django / FastAPI)</li>
+              <li>Building REST APIs</li>
+              <li>Scripting &amp; Automation</li>
+            </ul>
+          </div>
+          <!-- Kategori 2 -->
+          <div class="rounded-xl border border-emerald-200 bg-emerald-50/60 p-4">
+            <div class="flex items-center gap-2 mb-2">
+              <div class="w-8 h-8 rounded-lg bg-emerald-500 flex items-center justify-center text-white text-sm">
+                <i class="fa fa-line-chart"></i>
+              </div>
+              <h4 class="font-bold text-slate-800 text-sm">Data Science &amp; AI</h4>
+            </div>
+            <ul class="text-xs space-y-1 text-slate-600 m-0 pl-4">
+              <li>Data Analysis &amp; Visualization (Pandas)</li>
+              <li>Machine Learning Fundamentals</li>
+              <li>Deep Learning Frameworks</li>
+              <li>Practical AI &amp; LLM Integration</li>
+            </ul>
+          </div>
+          <!-- Kategori 3 -->
+          <div class="rounded-xl border border-amber-200 bg-amber-50/60 p-4">
+            <div class="flex items-center gap-2 mb-2">
+              <div class="w-8 h-8 rounded-lg bg-amber-500 flex items-center justify-center text-white text-sm">
+                <i class="fa fa-gamepad"></i>
+              </div>
+              <h4 class="font-bold text-slate-800 text-sm">Creative &amp; Multimedia</h4>
+            </div>
+            <ul class="text-xs space-y-1 text-slate-600 m-0 pl-4">
+              <li>Game Development (Pygame / Godot)</li>
+              <li>3D Graphics &amp; Scripting (Blender API)</li>
+              <li>Computer Vision &amp; Image Processing</li>
+              <li>VFX &amp; Animation Pipelines</li>
+            </ul>
+          </div>
+          <!-- Kategori 4 -->
+          <div class="rounded-xl border border-violet-200 bg-violet-50/60 p-4">
+            <div class="flex items-center gap-2 mb-2">
+              <div class="w-8 h-8 rounded-lg bg-violet-500 flex items-center justify-center text-white text-sm">
+                <i class="fa fa-rocket"></i>
+              </div>
+              <h4 class="font-bold text-slate-800 text-sm">Specialized &amp; Emerging Tech</h4>
+            </div>
+            <ul class="text-xs space-y-1 text-slate-600 m-0 pl-4">
+              <li>Cross-Platform Mobile Apps (Kivy/BeeWare)</li>
+              <li>IoT &amp; Hardware (MicroPython)</li>
+              <li>Performance Optimization</li>
+              <li>Cloud Native &amp; Serverless Python</li>
+            </ul>
+          </div>
+        </div>
+
+        <h3>Format &amp; Durasi</h3>
+        <ul>
+          <li><strong>Lightning Talk</strong> — durasi 10–15 menit, cocok untuk pengantar topik atau berbagi pengalaman singkat.</li>
+          <li><strong>Regular Talk</strong> — durasi 30–45 menit termasuk sesi tanya jawab, untuk pembahasan yang lebih mendalam.</li>
+          <li><strong>Workshop</strong> — durasi 2–3 jam, format praktik langsung dengan panduan langkah demi langkah.</li>
+        </ul>
+
+        <h3>Cara Pengajuan</h3>
+        <ul>
+          <li>Kunjungi tautan pengajuan resmi: <strong>linktr.ee/palembangpy</strong></li>
+          <li>Isi formulir pengajuan dengan melampirkan: judul topik, abstraksi (minimal 150 kata), format yang diinginkan, dan profil singkat pembicara.</li>
+          <li>Tim kurator akan meninjau proposal dan memberikan <strong>jawaban paling lambat 7 hari kerja</strong> setelah pengajuan.</li>
+          <li>Pembicara yang diterima akan dihubungi oleh panitia untuk koordinasi teknis lebih lanjut.</li>
+        </ul>
+
+        <h3>Benefit Menjadi Pembicara</h3>
+        <ul>
+          <li><strong>Sertifikat pembicara</strong> resmi dari PalembangPy.</li>
+          <li>Poin aktivitas eksklusif dan <strong>badge pembicara</strong> pada profil akun.</li>
+          <li>Promosi profil dan materi melalui kanal resmi komunitas.</li>
+          <li>Kesempatan menjadi <strong>pembicara undangan</strong> pada acara skala regional.</li>
+          <li>Jaringan profesional dengan praktisi industri dan akademisi.</li>
+        </ul>
+
+        <div class="note"><strong>Didukung oleh:</strong> Python Software Foundation &amp; Nevacloud sebagai Infrastruktur Partner. Pengajuan dibuka sepanjang tahun untuk meetup reguler Palembang.</div>
+      </section>
+
+      <!-- ========== TAB 6: Contribute ========== -->
+      <section id="contribute" class="tab-panel legal-content">
+        <div class="flex items-center gap-3 mb-5 pb-4 border-b border-slate-100">
+          <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center text-white text-lg shadow-md shadow-amber-500/25">
+            <i class="fa fa-handshake-o"></i>
+          </div>
+          <div>
+            <h2 class="text-xl md:text-2xl font-bold text-slate-800">Panduan Kontribusi</h2>
+            <p class="text-xs text-slate-400">Cara bergabung dan berkontribusi untuk kemajuan komunitas</p>
+          </div>
+        </div>
+
+        <h3>1. Jalur Kontribusi</h3>
+        <p>PalembangPy terbuka untuk berbagai bentuk kontribusi, tidak hanya kode. Berikut jalur yang dapat Anda pilih:</p>
+        <ul>
+          <li><strong>Kontribusi Kode</strong> — mengembangkan platform web, bot Telegram, dan alat bantu komunitas melalui repositori GitHub resmi.</li>
+          <li><strong>Materi &amp; Dokumentasi</strong> — menulis tutorial, memperbaiki dokumentasi, atau menerjemahkan materi ke dalam Bahasa Indonesia.</li>
+          <li><strong>Menjadi Pembicara</strong> — mengisi sesi pada meetup, workshop, atau konferensi dengan topik seputar Python dan ekosistemnya.</li>
+          <li><strong>Kepanitiaan</strong> — bergabung sebagai panitia acara, bertanggung jawab atas teknis pelaksanaan kegiatan.</li>
+          <li><strong>Sponsorship &amp; Kemitraan</strong> — dukungan finansial atau fasilitas dari perusahaan/lembaga yang selaras dengan visi komunitas.</li>
+        </ul>
+
+        <h3>2. Langkah Kontribusi Kode</h3>
+        <ul>
+          <li><strong>Fork</strong> repositori resmi ke akun GitHub pribadi Anda.</li>
+          <li>Buat <strong>branch fitur</strong> dengan format penamaan: <code>fitur/nama-fitur</code> atau <code>perbaikan/nama-perbaikan</code>.</li>
+          <li>Lakukan perubahan dengan mengikuti <strong>konvensi kode</strong> yang berlaku (PEP 8 untuk Python, ESLint untuk JavaScript).</li>
+          <li>Tulis atau perbarui <strong>unit test</strong> apabila perubahan menyentuh logika bisnis.</li>
+          <li>Ajukan <strong>Pull Request</strong> dengan deskripsi yang jelas: latar belakang, perubahan yang dilakukan, dan cara pengujian.</li>
+          <li>Tinjauan (<em>code review</em>) dilakukan oleh maintainer. PR akan digabung setelah mendapatkan minimal 1 persetujuan.</li>
+        </ul>
+
+        <h3>3. Pedoman Kontribusi</h3>
+        <ul>
+          <li>Setiap kontribusi wajib mematuhi <strong>Kode Etik</strong> komunitas.</li>
+          <li>Kontribusi materi harus <strong>orisinal</strong> atau menyertakan atribusi sumber yang jelas.</li>
+          <li>Hindari menyertakan <strong>informasi rahasia</strong> (API key, password, data pribadi) dalam kontribusi.</li>
+          <li>Gunakan Bahasa Indonesia atau Inggris yang baku dan mudah dipahami.</li>
+        </ul>
+
+        <h3>4. Pengakuan Kontributor</h3>
+        <p>Setiap kontributor akan mendapatkan:</p>
+        <ul>
+          <li>Pencantuman nama pada <strong>halaman kontributor</strong> platform resmi.</li>
+          <li><strong>Poin aktivitas</strong> yang terakumulasi pada akun, dapat ditukarkan dengan merchandise atau benefit eksklusif.</li>
+          <li>Sertifikat kontribusi untuk kontribusi yang signifikan (minimal 5 PR digabung atau menjadi pembicara minimal 2 kali).</li>
+          <li>Rekomendasi atau testimoni tertulis apabila dibutuhkan untuk keperluan profesional.</li>
+        </ul>
+
+        <h3>5. Memulai</h3>
+        <p>Siap berkontribusi? Hubungi pengurus melalui bot Telegram resmi atau kunjungi repositori GitHub kami di <strong>github.com/palembangpy</strong>. Setiap kontribusi, sekecil apa pun, sangat berarti bagi kemajuan ekosistem Python di Sumatera Selatan.</p>
+      </section>
+
+    </div>
+
+    <!-- CATATAN BAWAH -->
+    <div class="mt-6 text-center text-xs text-slate-400">
+      <p>Dengan menggunakan layanan PalembangPy, Anda dianggap telah membaca dan menyetujui seluruh dokumen di atas.</p>
+      <p class="mt-1">Pertanyaan lebih lanjut? Hubungi kami di <span class="text-orange-600 font-medium">hello@palembangpy.or.id</span></p>
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="bg-slate-900 text-white pt-12 pb-6">
+    <div class="max-w-6xl mx-auto px-4 md:px-6">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-10">
+        <!-- Brand -->
+        <div class="md:col-span-2">
+          <div class="flex items-center gap-2 mb-4">
+            <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-orange-500 to-red-500 flex items-center justify-center shadow-lg">
+              <i class="fa fa-code text-white text-sm"></i>
+            </div>
+            <span class="font-bold text-lg">PalembangPy</span>
+          </div>
+          <p class="text-slate-400 text-sm max-w-xs mb-4">Komunitas pengembang Python di Palembang. Belajar, berbagi, dan tumbuh bersama anak-anak Sumatera Selatan.</p>
+          <div class="flex gap-3">
+            <a href="https://t.me/PalembangPyBot" class="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center text-slate-400 hover:text-white hover:bg-slate-700 transition-colors">
+              <i class="fa fa-telegram"></i>
+            </a>
+            <a href="https://github.com/palembangpy" class="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center text-slate-400 hover:text-white hover:bg-slate-700 transition-colors">
+              <i class="fa fa-github"></i>
+            </a>
+            <a href="https://instagram.com/palembangpy" class="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center text-slate-400 hover:text-white hover:bg-slate-700 transition-colors">
+              <i class="fa fa-instagram"></i>
+            </a>
+            <a href="#" class="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center text-slate-400 hover:text-white hover:bg-slate-700 transition-colors">
+              <i class="fa fa-youtube"></i>
+            </a>
+          </div>
+        </div>
+
+        <!-- Tautan -->
+        <div>
+          <h4 class="font-semibold mb-4">Tautan Cepat</h4>
+          <ul class="space-y-2 text-sm text-slate-400">
+            <li><a href="#tentang" class="hover:text-orange-400 transition-colors">Tentang Kami</a></li>
+            <li><a href="#event" class="hover:text-orange-400 transition-colors">Event</a></li>
+            <li><a href="#fitur" class="hover:text-orange-400 transition-colors">Fitur</a></li>
+            <li><a href="#kontak" class="hover:text-orange-400 transition-colors">Kontak</a></li>
+          </ul>
+        </div>
+
+        <!-- Legal -->
+        <div>
+          <h4 class="font-semibold mb-4">Lainnya</h4>
+          <ul class="space-y-2 text-sm text-slate-400">
+            <li><a href="/legal" class="hover:text-orange-400 transition-colors">Legal</a></li>
+            <li><a href="#" class="hover:text-orange-400 transition-colors">FAQ</a></li>
+            <li><a href="https://t.me/PalembangPyBot" class="hover:text-orange-400 transition-colors">Gabung Member</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="border-t border-slate-800 pt-6 text-center text-xs text-slate-500">
+        <p id="credit">&copy; 2025 - 2026 PalembangPy — Seluruh hak dilindungi.</p>
+      </div>
+    </div>
+  </footer>
+  
+  <script>
+      document.getElementById("credit").innerHTML = `&copy; 2025 - ${new Date().getFullYear()} PalembangPy &mdash; Komunitas Python Palembang. Seluruh hak dilindungi.`;
+    </script>
+  <script>
+    (function () {
+      var buttons = document.querySelectorAll('.tab-btn');
+      var panels = document.querySelectorAll('.tab-panel');
+      buttons.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var target = btn.getAttribute('data-tab');
+          buttons.forEach(function (b) { b.classList.remove('active'); });
+          panels.forEach(function (p) { p.classList.remove('active'); });
+          btn.classList.add('active');
+          var panel = document.getElementById(target);
+          if (panel) panel.classList.add('active');
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+      });
+    })();
+  </script>
+
+</body>
+</html>

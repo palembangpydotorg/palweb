@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Detail Project — PalembangPy</title>
+  <link rel="shortcut icon" href="/img/palembangpy.png" type="image/x-icon" />
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', system-ui, -apple-system, sans-serif; }
+    #loadingOverlay {
+      position: fixed; inset: 0; background: white; z-index: 9999;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+    }
+  </style>
+</head>
+<body class="bg-slate-50 overflow-x-hidden">
+
+  <!-- Loading State -->
+  <div id="loadingOverlay">
+    <i class="fa fa-spinner fa-spin text-4xl text-orange-500 mb-3"></i>
+    <p class="text-slate-500 font-medium">Memuat rincian project...</p>
+  </div>
+
+  <!-- NAVBAR -->
+  <nav class="sticky top-0 z-50 bg-white/85 backdrop-blur-xl border-b border-orange-100">
+    <div class="max-w-6xl mx-auto px-4 md:px-6 py-3 flex items-center justify-between">
+      <a href="index.html" class="flex items-center gap-2">
+        <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-orange-500 to-red-500 flex items-center justify-center shadow-lg shadow-orange-500/30">
+          <i class="fa fa-code text-white text-sm"></i>
+        </div>
+        <span class="font-bold text-slate-800">PalembangPy</span>
+      </a>
+      <div class="hidden md:flex items-center gap-6 text-sm text-slate-600">
+        <a href="index.html" class="hover:text-orange-600 transition">Beranda</a>
+        <a href="events.html" class="hover:text-orange-600 transition">Event</a>
+        <a href="projects.html" class="text-orange-600 font-semibold">Project</a>
+        <a href="legal.html" class="hover:text-orange-600 transition">Legal</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- BREADCRUMB -->
+  <div class="max-w-6xl mx-auto px-4 md:px-6 pt-5">
+    <nav class="flex items-center gap-2 text-xs text-slate-400">
+      <a href="projects.html" class="hover:text-orange-600">Project Showcase</a>
+      <i class="fa fa-angle-right text-[10px]"></i>
+      <span class="text-slate-600 font-medium truncate" id="bc-title">Detail Project</span>
+    </nav>
+  </div>
+
+  <!-- KONTEN UTAMA -->
+  <main class="max-w-4xl mx-auto px-4 md:px-6 py-8">
+    
+    <!-- HEADER PROJECT -->
+    <div class="mb-8 text-center">
+      <div id="featured-badge" class="hidden mb-4">
+         <span class="px-3 py-1 bg-amber-100 text-amber-700 text-xs font-bold rounded-full"><i class="fa fa-star mr-1"></i> Featured Project</span>
+      </div>
+      <h1 id="proj-title" class="text-3xl md:text-4xl font-extrabold text-slate-800 mb-4">Memuat...</h1>
+      <div id="proj-tags" class="flex flex-wrap justify-center gap-2 mb-6">
+        <!-- Tags dinamis via JS -->
+      </div>
+    </div>
+
+    <!-- GAMBAR / BANNER -->
+    <div id="proj-image-container" class="aspect-video w-full rounded-2xl overflow-hidden shadow-md mb-8 bg-slate-200">
+       <img id="proj-image" src="" alt="" class="w-full h-full object-cover hidden">
+       <div id="proj-image-fallback" class="w-full h-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center">
+         <i class="fa fa-code text-white text-7xl opacity-20"></i>
+       </div>
+    </div>
+
+    <!-- GRID INFO -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      
+      <!-- DESKRIPSI -->
+      <div class="md:col-span-2 space-y-6">
+        <section class="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm">
+          <h2 class="text-lg font-bold text-slate-800 mb-3 border-b border-slate-100 pb-2">Deskripsi</h2>
+          <div id="proj-desc" class="text-sm text-slate-600 leading-relaxed whitespace-pre-line">
+            Memuat deskripsi...
+          </div>
+        </section>
+      </div>
+
+      <!-- SIDEBAR INFO -->
+      <div class="space-y-6">
+        <!-- Link Akses -->
+        <div class="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm">
+          <h2 class="text-sm font-bold text-slate-800 mb-4">Akses Project</h2>
+          <div class="space-y-3">
+            <a id="btn-demo" href="#" target="_blank" class="hidden w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-orange-500 text-white text-sm font-semibold rounded-xl hover:bg-orange-600 transition-colors shadow-md shadow-orange-500/25">
+              <i class="fa fa-external-link"></i> Kunjungi Live Demo
+            </a>
+            <a id="btn-github" href="#" target="_blank" class="hidden w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-slate-900 text-white text-sm font-semibold rounded-xl hover:bg-slate-800 transition-colors">
+              <i class="fa fa-github text-lg"></i> Lihat Repository
+            </a>
+            <p id="no-links-msg" class="text-xs text-slate-500 italic hidden">Tautan project tidak tersedia secara publik.</p>
+          </div>
+        </div>
+
+        <!-- Metadata -->
+        <div class="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm">
+          <h2 class="text-sm font-bold text-slate-800 mb-4">Informasi</h2>
+          <div class="space-y-4">
+            <div>
+              <p class="text-[10px] text-slate-400 uppercase tracking-wide mb-0.5">Dibuat Pada</p>
+              <p id="proj-date" class="text-sm font-medium text-slate-700">-</p>
+            </div>
+            <div>
+              <p class="text-[10px] text-slate-400 uppercase tracking-wide mb-0.5">Author ID</p>
+              <p id="proj-author" class="text-xs font-mono text-slate-500 truncate">-</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <footer class="bg-slate-900 text-white py-6 mt-10">
+    <div class="max-w-6xl mx-auto px-4 md:px-6 text-center text-xs text-slate-500">
+      <p id="credit">&copy; 2026 PalembangPy — Komunitas Python Palembang.</p>
+    </div>
+  </footer>
+
+  <script src="/js/project-detail.js"></script>
+  <script>
+      document.getElementById("credit").innerHTML = `&copy; 2025 - ${new Date().getFullYear()} PalembangPy &mdash; Komunitas Python Palembang. Seluruh hak dilindungi.`;
+  </script>
+</body>
+</html>

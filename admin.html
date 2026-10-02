@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>PalembangPy — Admin Panel</title>
+  <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <style>
+    * { -webkit-tap-highlight-color: transparent; }
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: #f1f5f9;
+      color: #0f172a;
+      padding-bottom: calc(72px + env(safe-area-inset-bottom));
+      min-height: 100vh;
+    }
+    .page { display: none; animation: fadeIn 0.3s ease; }
+    .page.active { display: block; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+    .nav-btn { transition: all 0.2s ease; }
+    .nav-btn.active { color: #0f172a; }
+    .nav-btn.active .nav-icon { transform: translateY(-2px) scale(1.1); }
+    .nav-btn.active .nav-dot { opacity: 1; }
+    .nav-icon { transition: transform 0.2s ease; }
+    .nav-dot { width: 4px; height: 4px; border-radius: 9999px; background: #ff7b00; opacity: 0; transition: opacity 0.2s; }
+    .card { background: #fff; border-radius: 1rem; border: 1px solid #e2e8f0; box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
+    .toast {
+      position: fixed; top: 16px; left: 50%; transform: translateX(-50%) translateY(-100px);
+      background: #0f172a; color: #fff; padding: 10px 20px; border-radius: 12px;
+      font-size: 13px; font-weight: 500; z-index: 100; transition: transform 0.3s ease;
+      max-width: 90%; text-align: center;
+    }
+    .toast.show { transform: translateX(-50%) translateY(0); }
+    .modal-overlay {
+      position: fixed; inset: 0; background: rgba(15,23,42,0.5); z-index: 90;
+      display: none; align-items: flex-end; justify-content: center;
+    }
+    .modal-overlay.show { display: flex; }
+    .modal-sheet {
+      background: #fff; width: 100%; max-width: 480px; border-radius: 1.25rem 1.25rem 0 0;
+      padding: 1.25rem; max-height: 85vh; overflow-y: auto;
+      animation: slideUp 0.3s ease; padding-bottom: calc(1.25rem + env(safe-area-inset-bottom));
+    }
+    @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+    .badge { display: inline-flex; align-items: center; padding: 2px 8px; border-radius: 9999px; font-size: 10px; font-weight: 700; }
+    .switch { position: relative; width: 36px; height: 20px; background: #cbd5e1; border-radius: 9999px; transition: background 0.2s; flex-shrink: 0; }
+    .switch.on { background: linear-gradient(135deg, #ff7b00, #ff4757); }
+    .switch::after { content:''; position: absolute; top: 2px; left: 2px; width: 16px; height: 16px; background: #fff; border-radius: 9999px; transition: transform 0.2s; }
+    .switch.on::after { transform: translateX(16px); }
+    .bar-chart { display: flex; align-items: flex-end; gap: 6px; height: 80px; }
+    .bar { flex: 1; background: linear-gradient(to top, #ff7b00, #ffb066); border-radius: 4px 4px 0 0; position: relative; transition: all 0.3s; }
+    .bar:hover { opacity: 0.8; }
+    input, select, textarea { outline: none; }
+    input:focus, select:focus, textarea:focus { border-color: #ff7b00 !important; }
+  </style>
+</head>
+<body>
+
+  <div id="toast" class="toast"></div>
+
+  <!-- ==================== PAGE: DASHBOARD ==================== -->
+  <div id="page-dashboard" class="page active px-4 pt-4">
+    <!-- Header -->
+    <div class="flex items-center justify-between mb-4">
+      <div>
+        <p class="text-[10px] uppercase tracking-widest text-orange-500 font-bold">Admin Panel</p>
+        <h1 class="text-lg font-extrabold">Dashboard</h1>
+      </div>
+      <div class="flex items-center gap-2">
+        <span class="badge bg-emerald-100 text-emerald-700"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-1 animate-pulse"></span>Online</span>
+        <div class="w-9 h-9 rounded-full bg-gradient-to-br from-slate-700 to-slate-900 flex items-center justify-center text-white text-xs font-bold">TA</div>
+      </div>
+    </div>
+
+    <!-- Statistik -->
+    <div class="grid grid-cols-2 gap-3 mb-4">
+      <div class="card p-4">
+        <div class="flex items-center justify-between mb-2">
+          <div class="w-8 h-8 rounded-lg bg-orange-50 flex items-center justify-center text-orange-500"><i class="fa fa-users text-sm"></i></div>
+          <span class="text-[10px] font-bold text-emerald-500"><i class="fa fa-arrow-up"></i> 12%</span>
+        </div>
+        <p class="text-2xl font-extrabold" id="statUsers">524</p>
+        <p class="text-[10px] text-slate-400">Total Anggota</p>
+      </div>
+      <div class="card p-4">
+        <div class="flex items-center justify-between mb-2">
+          <div class="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center text-blue-500"><i class="fa fa-calendar text-sm"></i></div>
+          <span class="text-[10px] font-bold text-emerald-500"><i class="fa fa-arrow-up"></i> 8%</span>
+        </div>
+        <p class="text-2xl font-extrabold" id="statEvents">52</p>
+        <p class="text-[10px] text-slate-400">Total Event</p>
+      </div>
+      <div class="card p-4">
+        <div class="flex items-center justify-between mb-2">
+          <div class="w-8 h-8 rounded-lg bg-emerald-50 flex items-center justify-center text-emerald-500"><i class="fa fa-certificate text-sm"></i></div>
+          <span class="text-[10px] font-bold text-emerald-500"><i class="fa fa-arrow-up"></i> 24%</span>
+        </div>
+        <p class="text-2xl font-extrabold" id="statCerts">318</p>
+        <p class="text-[10px] text-slate-400">Sertifikat Terbit</p>
+      </div>
+      <div class="card p-4">
+        <div class="flex items-center justify-between mb-2">
+          <div class="w-8 h-8 rounded-lg bg-purple-50 flex items-center justify-center text-purple-500"><i class="fa fa-handshake-o text-sm"></i></div>
+          <span class="text-[10px] font-bold text-slate-400">—</span>
+        </div>
+        <p class="text-2xl font-extrabold" id="statPartners">14</p>
+        <p class="text-[10px] text-slate-400">Partner Aktif</p>
+      </div>
+    </div>
+
+    <!-- Chart -->
+    <div class="card p-4 mb-4">
+      <div class="flex items-center justify-between mb-3">
+        <h3 class="text-xs font-bold text-slate-700">Peserta per Bulan</h3>
+        <span class="text-[10px] text-slate-400">6 bulan terakhir</span>
+      </div>
+      <div class="bar-chart" id="barChart"></div>
+      <div class="flex justify-between mt-2 text-[9px] text-slate-400">
+        <span>Apr</span><span>Mei</span><span>Jun</span><span>Jul</span><span>Agu</span><span>Sep</span>
+      </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <h3 class="text-xs font-bold text-slate-700 mb-2">Aksi Cepat</h3>
+    <div class="grid grid-cols-4 gap-2 mb-4">
+      <button onclick="openModal('addEvent')" class="card p-3 flex flex-col items-center gap-1.5 active:scale-95 transition">
+        <div class="w-9 h-9 rounded-xl bg-orange-50 flex items-center justify-center text-orange-500"><i class="fa fa-plus"></i></div>
+        <span class="text-[9px] font-medium text-slate-600 text-center">Tambah Event</span>
+      </button>
+      <button onclick="openModal('addUser')" class="card p-3 flex flex-col items-center gap-1.5 active:scale-95 transition">
+        <div class="w-9 h-9 rounded-xl bg-blue-50 flex items-center justify-center text-blue-500"><i class="fa fa-user-plus"></i></div>
+        <span class="text-[9px] font-medium text-slate-600 text-center">Tambah User</span>
+      </button>
+      <button onclick="openModal('genCert')" class="card p-3 flex flex-col items-center gap-1.5 active:scale-95 transition">
+        <div class="w-9 h-9 rounded-xl bg-emerald-50 flex items-center justify-center text-emerald-500"><i class="fa fa-magic"></i></div>
+        <span class="text-[9px] font-medium text-slate-600 text-center">Generate Sertifikat</span>
+      </button>
+      <button onclick="showToast('Broadcast dikirim ke 524 anggota')" class="card p-3 flex flex-col items-center gap-1.5 active:scale-95 transition">
+        <div class="w-9 h-9 rounded-xl bg-purple-50 flex items-center justify-center text-purple-500"><i class="fa fa-bullhorn"></i></div>
+        <span class="text-[9px] font-medium text-slate-600 text-center">Broadcast</span>
+      </button>
+    </div>
+
+    <!-- Recent Activity -->
+    <h3 class="text-xs font-bold text-slate-700 mb-2">Aktivitas Terbaru</h3>
+    <div class="card divide-y divide-slate-100">
+      <div class="p-3 flex items-center gap-3">
+        <div class="w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600 text-xs"><i class="fa fa-user-plus"></i></div>
+        <div class="flex-1 min-w-0">
+          <p class="text-xs font-medium text-slate-700 truncate">User baru mendaftar: <strong>budi_santoso</strong></p>
+          <p class="text-[10px] text-slate-400">5 menit lalu</p>
+        </div>
+      </div>
+      <div class="p-3 flex items-center gap-3">
+        <div class="w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center text-orange-600 text-xs"><i class="fa fa-calendar"></i></div>
+        <div class="flex-1 min-w-0">
+          <p class="text-xs font-medium text-slate-700 truncate">Event baru dibuat: <strong>Workshop FastAPI</strong></p>
+          <p class="text-[10px] text-slate-400">1 jam lalu</p>
+        </div>
+      </div>
+      <div class="p-3 flex items-center gap-3">
+        <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 text-xs"><i class="fa fa-certificate"></i></div>
+        <div class="flex-1 min-w-0">
+          <p class="text-xs font-medium text-slate-700 truncate">24 sertifikat diterbitkan untuk Meetup #12</p>
+          <p class="text-[10px] text-slate-400">3 jam lalu</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== PAGE: USERS ==================== -->
+  <div id="page-users" class="page px-4 pt-4">
+    <div class="flex items-center justify-between mb-3">
+      <div>
+        <h1 class="text-lg font-extrabold">Kelola User</h1>
+        <p class="text-[11px] text-slate-400" id="userCount">524 anggota terdaftar</p>
+      </div>
+      <button onclick="openModal('addUser')" class="w-9 h-9 rounded-xl bg-gradient-to-br from-orange-500 to-red-500 text-white flex items-center justify-center shadow-lg shadow-orange-500/30 active:scale-90 transition"><i class="fa fa-plus"></i></button>
+    </div>
+
+    <!-- Search -->
+    <div class="relative mb-3">
+      <i class="fa fa-search absolute left-3 top-1/2 -translate-y-1/2 text-slate-300 text-xs"></i>
+      <input type="text" id="userSearch" placeholder="Cari nama, username, telegram ID..." class="w-full pl-9 pr-3 py-2.5 text-xs bg-white border border-slate-200 rounded-xl focus:border-orange-400 transition">
+    </div>
+
+    <!-- Filter chips -->
+    <div class="flex gap-2 overflow-x-auto pb-2 mb-3 -mx-4 px-4" style="scrollbar-width:none">
+      <button class="user-filter active px-3 py-1.5 rounded-full text-[11px] font-semibold whitespace-nowrap bg-slate-900 text-white" data-filter="all">Semua</button>
+      <button class="user-filter px-3 py-1.5 rounded-full text-[11px] font-semibold whitespace-nowrap bg-white border border-slate-200 text-slate-600" data-filter="admin">Admin</button>
+      <button class="user-filter px-3 py-1.5 rounded-full text-[11px] font-semibold whitespace-nowrap bg-white border border-slate-200 text-slate-600" data-filter="staff">Staff</button>
+      <button class="user-filter px-3 py-1.5 rounded-full text-[11px] font-semibold whitespace-nowrap bg-white border border-slate-200 text-slate-600" data-filter="member">Member</button>
+    </div>
+
+    <div id="userList" class="space-y-2"></div>
+  </div>
+
+  <!-- ==================== PAGE: EVENTS ==================== -->
+  <div id="page-events" class="page px-4 pt-4">
+    <div class="flex items-center justify-between mb-3">
+      <div>
+        <h1 class="text-lg font-extrabold">Kelola Event</h1>
+        <p class="text-[11px] text-slate-400">52 event tercatat</p>
+      </div>
+      <button onclick="openModal('addEvent')" class="w-9 h-9 rounded-xl bg-gradient-to-br from-orange-500 to-red-500 text-white flex items-center justify-center shadow-lg shadow-orange-500/30 active:scale-90 transition"><i class="fa fa-plus"></i></button>
+    </div>
+
+    <div id="eventListAdmin" class="space-y-3"></div>
+  </div>
+
+  <!-- ==================== PAGE: MORE ==================== -->
+  <div id="page-more" class="page px-4 pt-4">
+    <h1 class="text-lg font-extrabold mb-4">Lainnya</h1>
+
+    <!-- Partner & Speaker -->
+    <div class="grid grid-cols-2 gap-3 mb-4">
+      <button onclick="openModal('addPartner')" class="card p-4 text-left active:scale-95 transition">
+        <div class="w-10 h-10 rounded-xl bg-purple-50 flex items-center justify-center text-purple-500 mb-2"><i class="fa fa-handshake-o"></i></div>
+        <p class="text-xs font-bold text-slate-700">Partner</p>
+        <p class="text-[10px] text-slate-400">14 partner aktif</p>
+      </button>
+      <button onclick="openModal('addSpeaker')" class="card p-4 text-left active:scale-95 transition">
+        <div class="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center text-blue-500 mb-2"><i class="fa fa-microphone"></i></div>
+        <p class="text-xs font-bold text-slate-700">Speaker</p>
+        <p class="text-[10px] text-slate-400">28 pembicara</p>
+      </button>
+    </div>
+
+    <!-- Sertifikat -->
+    <div class="card p-4 mb-3 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-emerald-50 flex items-center justify-center text-emerald-500"><i class="fa fa-certificate"></i></div>
+        <div>
+          <p class="text-xs font-bold text-slate-700">Sertifikat</p>
+          <p class="text-[10px] text-slate-400">318 diterbitkan · 0 revoked</p>
+        </div>
+      </div>
+      <button onclick="openModal('genCert')" class="px-3 py-1.5 bg-emerald-50 text-emerald-600 text-[11px] font-semibold rounded-lg active:scale-95 transition">Generate</button>
+    </div>
+
+    <!-- Settings -->
+    <p class="text-[10px] uppercase tracking-widest text-slate-400 font-bold mb-2 px-1">Pengaturan</p>
+    <div class="card divide-y divide-slate-100 mb-4">
+      <div class="p-3.5 flex items-center justify-between">
+        <span class="text-xs font-medium text-slate-700 flex items-center gap-2"><i class="fa fa-bell text-orange-400 w-4"></i>Notifikasi Email</span>
+        <div class="switch on" onclick="this.classList.toggle('on')"></div>
+      </div>
+      <div class="p-3.5 flex items-center justify-between">
+        <span class="text-xs font-medium text-slate-700 flex items-center gap-2"><i class="fa fa-shield text-blue-400 w-4"></i>Mode Maintenance</span>
+        <div class="switch" onclick="this.classList.toggle('on')"></div>
+      </div>
+      <div class="p-3.5 flex items-center justify-between">
+        <span class="text-xs font-medium text-slate-700 flex items-center gap-2"><i class="fa fa-globe text-emerald-400 w-4"></i>Pendaftaran Terbuka</span>
+        <div class="switch on" onclick="this.classList.toggle('on')"></div>
+      </div>
+      <div class="p-3.5 flex items-center justify-between">
+        <span class="text-xs font-medium text-slate-700 flex items-center gap-2"><i class="fa fa-database text-purple-400 w-4"></i>Backup Otomatis</span>
+        <div class="switch on" onclick="this.classList.toggle('on')"></div>
+      </div>
+    </div>
+
+    <button onclick="logoutAdmin()" class="w-full p-3.5 card text-red-500 text-xs font-semibold flex items-center justify-center gap-2 active:bg-red-50 transition">
+      <i class="fa fa-sign-out"></i> Keluar dari Admin
+    </button>
+    <p class="text-center text-[10px] text-slate-300 mt-4">PalembangPy Admin v1.0.0 · API v1</p>
+  </div>
+
+  <!-- ==================== BOTTOM NAV ==================== -->
+  <nav class="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-xl border-t border-slate-200 z-50" style="padding-bottom: env(safe-area-inset-bottom);">
+    <div class="grid grid-cols-4 max-w-md mx-auto">
+      <button class="nav-btn active flex flex-col items-center gap-1 py-2.5 text-slate-400" data-tab="dashboard" onclick="switchTab('dashboard')">
+        <i class="fa fa-dashboard nav-icon text-base"></i>
+        <span class="text-[10px] font-medium">Dashboard</span>
+        <span class="nav-dot"></span>
+      </button>
+      <button class="nav-btn flex flex-col items-center gap-1 py-2.5 text-slate-400" data-tab="users" onclick="switchTab('users')">
+        <i class="fa fa-users nav-icon text-base"></i>
+        <span class="text-[10px] font-medium">Users</span>
+        <span class="nav-dot"></span>
+      </button>
+      <button class="nav-btn flex flex-col items-center gap-1 py-2.5 text-slate-400" data-tab="events" onclick="switchTab('events')">
+        <i class="fa fa-calendar nav-icon text-base"></i>
+        <span class="text-[10px] font-medium">Events</span>
+        <span class="nav-dot"></span>
+      </button>
+      <button class="nav-btn flex flex-col items-center gap-1 py-2.5 text-slate-400" data-tab="more" onclick="switchTab('more')">
+        <i class="fa fa-bars nav-icon text-base"></i>
+        <span class="text-[10px] font-medium">Lainnya</span>
+        <span class="nav-dot"></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ==================== MODAL ==================== -->
+  <div class="modal-overlay" id="modalOverlay" onclick="if(event.target===this)closeModal()">
+    <div class="modal-sheet">
+      <div class="w-10 h-1 bg-slate-200 rounded-full mx-auto mb-4"></div>
+      <div id="modalContent"></div>
+    </div>
+  </div>
+
+  <script>
+  (function () {
+    var API_URL = "https://api.palembangpy.org/v1";
+    var tg = window.Telegram ? window.Telegram.WebApp : null;
+    if (tg) { tg.ready(); tg.expand(); tg.setHeaderColor("#0f172a"); }
+
+    // ===== DATA DEMO =====
+    var USERS = [
+      { id:1, name:"Tomy Aliyansyah", username:"tomy", telegram_id:"100001", role:"admin", points:9999, joined:"2018-03-10", active:true },
+      { id:2, name:"Budi Santoso", username:"budi_santoso", telegram_id:"100002", role:"member", points:120, joined:"2026-09-28", active:true },
+      { id:3, name:"Siti Rahayu", username:"siti_r", telegram_id:"100003", role:"staff", points:540, joined:"2025-11-02", active:true },
+      { id:4, name:"Andi Pratama", username:"andipratama", telegram_id:"100004", role:"member", points:240, joined:"2026-01-15", active:true },
+      { id:5, name:"Dewi Lestari", username:"dewilestari", telegram_id:"100005", role:"member", points:85, joined:"2026-07-20", active:false },
+      { id:6, name:"Rizky Ramadhan", username:"rizkyr", telegram_id:"100006", role:"staff", points:410, joined:"2025-08-14", active:true }
+    ];
+    var EVENTS = [
+      { id:1, title:"Meetup #12: Python untuk Pemula", date:"15 Okt 2026", location:"Cafe Kawan Lama", is_free:true, participants:24, status:"open", color:"from-orange-400 to-red-500", icon:"fa-code" },
+      { id:2, title:"Workshop: REST API dengan FastAPI", date:"28 Okt 2026", location:"UIN Raden Fatah", is_free:false, price:75000, participants:18, status:"open", color:"from-blue-500 to-indigo-600", icon:"fa-laptop" },
+      { id:3, title:"Meetup #11: Django Fundamentals", date:"10 Sep 2026", location:"Co-Working Ampera", is_free:true, participants:32, status:"done", color:"from-purple-500 to-fuchsia-600", icon:"fa-code" },
+      { id:4, title:"PalembangPy DevConf 2026", date:"12 Nov 2026", location:"Hotel Grand Sahid", is_free:false, price:150000, participants:120, status:"open", color:"from-emerald-500 to-cyan-600", icon:"fa-graduation-cap" }
+    ];
+
+    // ===== UTILITIES =====
+    function showToast(msg) {
+      var t = document.getElementById("toast");
+      t.textContent = msg; t.classList.add("show");
+      setTimeout(function(){ t.classList.remove("show"); }, 2500);
+      if (tg && tg.HapticFeedback) tg.HapticFeedback.notificationOccurred("success");
+    }
+    function roleBadge(role) {
+      if (role === "admin") return '<span class="badge bg-red-100 text-red-600">ADMIN</span>';
+      if (role === "staff") return '<span class="badge bg-blue-100 text-blue-600">STAFF</span>';
+      return '<span class="badge bg-slate-100 text-slate-500">MEMBER</span>';
+    }
+    function initials(name) { var p = name.split(" "); return (p[0][0]+(p[1]?p[1][0]:"")).toUpperCase(); }
+
+    // ===== TAB =====
+    window.switchTab = function(tab) {
+      document.querySelectorAll(".page").forEach(function(p){ p.classList.remove("active"); });
+      document.querySelectorAll(".nav-btn").forEach(function(b){ b.classList.remove("active"); });
+      document.getElementById("page-"+tab).classList.add("active");
+      document.querySelector('.nav-btn[data-tab="'+tab+'"]').classList.add("active");
+      if (tg && tg.HapticFeedback) tg.HapticFeedback.selectionChanged();
+      window.scrollTo(0,0);
+    };
+
+    // ===== BAR CHART =====
+    var chartData = [45, 62, 38, 80, 71, 95];
+    var max = Math.max.apply(null, chartData);
+    var chartHtml = "";
+    chartData.forEach(function(v, i) {
+      var h = Math.round((v/max)*100);
+      chartHtml += '<div class="bar" style="height:'+h+'%" title="'+v+' peserta"></div>';
+    });
+    document.getElementById("barChart").innerHTML = chartHtml;
+
+    // ===== RENDER USERS =====
+    var currentUserFilter = "all", currentUserSearch = "";
+    function renderUsers() {
+      var list = USERS.filter(function(u) {
+        if (currentUserFilter !== "all" && u.role !== currentUserFilter) return false;
+        if (currentUserSearch) {
+          var q = currentUserSearch.toLowerCase();
+          return u.name.toLowerCase().indexOf(q) !== -1 || u.username.toLowerCase().indexOf(q) !== -1 || u.telegram_id.indexOf(q) !== -1;
+        }
+        return true;
+      });
+      document.getElementById("userCount").textContent = list.length + " anggota terlihat";
+      var html = "";
+      list.forEach(function(u) {
+        html += '<div class="card p-3 flex items-center gap-3">';
+        html += '<div class="w-10 h-10 rounded-xl bg-gradient-to-br from-orange-400 to-red-500 flex items-center justify-center text-white text-xs font-bold shrink-0">' + initials(u.name) + '</div>';
+        html += '<div class="flex-1 min-w-0">';
+        html += '<div class="flex items-center gap-1.5"><p class="text-xs font-bold text-slate-800 truncate">' + u.name + '</p>' + roleBadge(u.role) + '</div>';
+        html += '<p class="text-[10px] text-slate-400 font-mono">@' + u.username + ' · ' + u.telegram_id + '</p>';
+        html += '<p class="text-[10px] text-orange-500 font-semibold mt-0.5"><i class="fa fa-star"></i> ' + u.points + ' poin · ' + (u.active ? '<span class="text-emerald-500">Aktif</span>' : '<span class="text-slate-400">Nonaktif</span>') + '</p>';
+        html += '</div>';
+        html += '<button onclick="userAction('+u.id+')" class="w-8 h-8 rounded-lg bg-slate-50 text-slate-400 flex items-center justify-center active:scale-90 transition shrink-0"><i class="fa fa-ellipsis-v text-xs"></i></button>';
+        html += '</div>';
+      });
+      if (list.length === 0) html = '<div class="text-center py-10 text-slate-400"><i class="fa fa-search text-3xl mb-2 block"></i><p class="text-xs">Tidak ada user ditemukan</p></div>';
+      document.getElementById("userList").innerHTML = html;
+    }
+    document.getElementById("userSearch").addEventListener("input", function(e) { currentUserSearch = e.target.value; renderUsers(); });
+    document.querySelectorAll(".user-filter").forEach(function(chip) {
+      chip.addEventListener("click", function() {
+        document.querySelectorAll(".user-filter").forEach(function(c){ c.classList.remove("active","bg-slate-900","text-white"); c.classList.add("bg-white","border","border-slate-200","text-slate-600"); });
+        chip.classList.add("active","bg-slate-900","text-white"); chip.classList.remove("bg-white","border","border-slate-200","text-slate-600");
+        currentUserFilter = chip.getAttribute("data-filter"); renderUsers();
+      });
+    });
+    window.userAction = function(id) {
+      var u = USERS.find(function(x){return x.id===id;});
+      if (!u) return;
+      if (tg && tg.showPopup) {
+        tg.showPopup({ title: u.name, message: "Pilih aksi untuk " + u.name, buttons: [
+          { id:"add", text:"+50 Poin", type:"default" },
+          { id:"toggle", text: u.active ? "Nonaktifkan" : "Aktifkan", type:"default" },
+          { id:"close", text:"Batal", type:"cancel" }
+        ]}, function(btnId) {
+          if (btnId === "add") { u.points += 50; showToast("50 poin ditambahkan ke " + u.name); }
+          if (btnId === "toggle") { u.active = !u.active; showToast(u.name + " di" + (u.active?"aktifkan":"nonaktifkan")); }
+          renderUsers();
+        });
+      } else {
+        u.points += 50; showToast("50 poin ditambahkan ke " + u.name);
+        renderUsers();
+      }
+    };
+
+    // ===== RENDER EVENTS ADMIN =====
+    function renderEventsAdmin() {
+      var html = "";
+      EVENTS.forEach(function(ev) {
+        var statusBadge = ev.status === "open"
+          ? '<span class="badge bg-emerald-100 text-emerald-600"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-1 animate-pulse"></span>PENDAFTARAN BUKA</span>'
+          : '<span class="badge bg-slate-100 text-slate-500">SELESAI</span>';
+        html += '<div class="card overflow-hidden">';
+        html += '<div class="flex">';
+        html += '<div class="w-16 bg-gradient-to-br ' + ev.color + ' flex items-center justify-center text-white shrink-0"><i class="fa ' + ev.icon + ' text-xl opacity-70"></i></div>';
+        html += '<div class="flex-1 p-3 min-w-0">';
+        html += '<div class="flex items-start justify-between gap-2">' + statusBadge + '</div>';
+        html += '<h3 class="text-xs font-bold text-slate-800 mt-1 leading-snug">' + ev.title + '</h3>';
+        html += '<p class="text-[10px] text-slate-400 mt-1"><i class="fa fa-calendar-o mr-1"></i>' + ev.date + ' · <i class="fa fa-map-marker ml-1 mr-1"></i>' + ev.location + '</p>';
+        html += '<p class="text-[10px] text-slate-400 mt-0.5"><i class="fa fa-users mr-1"></i>' + ev.participants + ' peserta · ' + (ev.is_free ? '<span class="text-emerald-500 font-semibold">Gratis</span>' : '<span class="text-amber-600 font-semibold">Rp ' + ev.price.toLocaleString("id-ID") + '</span>') + '</p>';
+        html += '</div></div>';
+        html += '<div class="flex border-t border-slate-100">';
+        html += '<button onclick="eventAction('+ev.id+',\'cert\')" class="flex-1 py-2.5 text-[11px] font-semibold text-emerald-600 active:bg-emerald-50 transition flex items-center justify-center gap-1"><i class="fa fa-magic"></i> Sertifikat</button>';
+        html += '<div class="w-px bg-slate-100"></div>';
+        html += '<button onclick="eventAction('+ev.id+',\'edit\')" class="flex-1 py-2.5 text-[11px] font-semibold text-blue-600 active:bg-blue-50 transition flex items-center justify-center gap-1"><i class="fa fa-pencil"></i> Edit</button>';
+        html += '<div class="w-px bg-slate-100"></div>';
+        html += '<button onclick="eventAction('+ev.id+',\'del\')" class="flex-1 py-2.5 text-[11px] font-semibold text-red-500 active:bg-red-50 transition flex items-center justify-center gap-1"><i class="fa fa-trash"></i> Hapus</button>';
+        html += '</div></div>';
+      });
+      document.getElementById("eventListAdmin").innerHTML = html;
+    }
+    window.eventAction = function(id, action) {
+      var ev = EVENTS.find(function(e){return e.id===id;});
+      if (!ev) return;
+      if (action === "cert") showToast("Generate sertifikat untuk: " + ev.title + " (" + ev.participants + " peserta)");
+      if (action === "edit") openModal("addEvent", ev);
+      if (action === "del") {
+        if (tg && tg.showConfirm) {
+          tg.showConfirm("Hapus event \"" + ev.title + "\"?", function(ok){ if(ok){ EVENTS = EVENTS.filter(function(e){return e.id!==id;}); renderEventsAdmin(); showToast("Event dihapus"); } });
+        } else { showToast("Event dihapus (demo)"); }
+      }
+    };
+
+    // ===== MODAL =====
+    window.openModal = function(type, data) {
+      var c = document.getElementById("modalContent");
+      var html = "";
+      if (type === "addEvent") {
+        html = '<h3 class="text-sm font-bold text-slate-800 mb-3">' + (data ? "Edit Event" : "Tambah Event Baru") + '</h3>';
+        html += '<div class="space-y-3">';
+        html += '<div><label class="text-[10px] font-semibold text-slate-500 uppercase tracking-wide">Judul Event</label><input type="text" value="' + (data?data.title:"") + '" placeholder="Nama event..." class="w-full mt-1 px-3 py-2.5 text-xs border border-slate-200 rounded-lg"></div>';
+        html += '<div class="grid grid-cols-2 gap-2"><div><label class="text-[10px] font-semibold text-slate-500 uppercase tracking-wide">Tanggal</label><input type="date" class="w-full mt-1 px-3 py-2.5 text-xs border border-slate-200 rounded-lg"></div>';
+        html += '<div><label class="text-[10px] font-semibold text-slate-500 uppercase tracking-wide">Lokasi</label><input type="text" placeholder="Lokasi" class="w-full mt-1 px-3 py-2.5 text-xs border border-slate-200 rounded-lg"></div></div>';
+        html += '<div class="flex items-center justify-between p-3 bg-slate-50 rounded-lg"><span class="text-xs font-medium text-slate-600">Event Berbayar</span><div class="switch" onclick="this.classList.toggle(\'on\')"></div></div>';
+        html += '<div><label class="text-[10px] font-semibold text-slate-500 uppercase tracking-wide">Harga (Rp) — isi 0 jika gratis</label><input type="number" placeholder="0" value="0" class="w-full mt-1 px-3 py-2.5 text-xs border border-slate-200 rounded-lg font-mono"></div>';
+        html += '<div><label class="text-[10px] font-semibold text-slate-500 uppercase tracking-wide">Kuota Peserta</label><input type="number" placeholder="30" value="30" class="w-full mt-1 px-3 py-2.5 text-xs border border-slate-200 rounded-lg"></div>';
+        html += '<div><label class="text-[10px] font-semibold text-slate-500 uppercase tracking-wide">Deskripsi Event</label><textarea rows="3" placeholder="Deskripsi singkat event..." class="w-full mt-1 px-3 py-2.5 text-xs border border-slate-200 rounded-lg resize-none"></textarea></div>';
+        html += '<div><label class="text-[10px] font-semibold text-slate-500 uppercase tracking-wide flex items-center justify-between">Agenda / Rundown <span class="text-orange-500 normal-case font-medium cursor-pointer" onclick="addAgendaRow()"><i class="fa fa-plus-circle"></i> Tambah sesi</span></label><div id="agendaList" class="space-y-2 mt-1"></div></div>';
+        html += '<button onclick="closeModal();showToast(\'' + (data?'Event diperbarui':'Event baru berhasil dibuat') + '\')" class="w-full py-3 bg-gradient-to-r from-orange-500 to-red-500 text-white text-xs font-bold rounded-xl shadow-lg shadow-orange-500/30 active:scale-95 transition"><i class="fa fa-check mr-1"></i> Simpan Event</button>';
+        html += '</div>';
+      } else if (type === "addUser") {
+        html = '<h3 class="text-sm font-bold text-slate-800 mb-3">Tambah User Baru</h3>';
+        html += '<div class="space-y-3">';
+        html += '<div><label class="text-[10px] font-semibold text-slate-500 uppercase tracking-wide">Nama Lengkap</label><input type="text" placeholder="Nama lengkap" class="w-full mt-1 px-3 py-2.5 text-xs border border-slate-200 rounded-lg"></div>';
+        html += '<div><label class="text-[10px] font-semibold text-slate-500 uppercase tracking-wide">Username</label><input type="text" placeholder="username" class="w-full mt-1 px-3 py-2.5 text-xs border border-slate-200 rounded-lg"></div>';
+        html += '<div><label class="text-[10px] font-semibold text-slate-500 uppercase tracking-wide">Telegram ID</label><input type="text" placeholder="123456789" class="w-full mt-1 px-3 py-2.5 text-xs border border-slate-200 rounded-lg font-mono"></div>';
+        html += '<div><label class="text-[10px] font-semibold text-slate-500 uppercase tracking-wide">Role</label><select class="w-full mt-1 px-3 py-2.5 text-xs border border-slate-200 rounded-lg bg-white"><option>Member</option><option>Staff</option><option>Admin</option></select></div>';
+        html += '<button onclick="closeModal();showToast(\'User baru berhasil ditambahkan\')" class="w-full py-3 bg-gradient-to-r from-orange-500 to-red-500 text-white text-xs font-bold rounded-xl shadow-lg shadow-orange-500/30 active:scale-95 transition"><i class="fa fa-user-plus mr-1"></i> Tambah User</button>';
+        html += '</div>';
+      } else if (type === "genCert") {
+        html = '<h3 class="text-sm font-bold text-slate-800 mb-3">Generate Sertifikat Massal</h3>';
+        html += '<div class="space-y-3">';
+        html += '<div><label class="text-[10px] font-semibold text-slate-500 uppercase tracking-wide">Pilih Event</label><select class="w-full mt-1 px-3 py-2.5 text-xs border border-slate-200 rounded-lg bg-white">';
+        EVENTS.forEach(function(e){ html += '<option>' + e.title + '</option>'; });
+        html += '</select></div>';
+        html += '<div><label class="text-[10px] font-semibold text-slate-500 uppercase tracking-wide">Role Peserta</label><select class="w-full mt-1 px-3 py-2.5 text-xs border border-slate-200 rounded-lg bg-white"><option>Participant</option><option>Speaker</option><option>Panitia</option></select></div>';
+        html += '<div class="bg-blue-50 border border-blue-200 rounded-lg p-3 text-[11px] text-blue-700"><i class="fa fa-info-circle mr-1"></i> Akan menerbitkan sertifikat untuk seluruh peserta yang hadir (min. 80% kehadiran).</div>';
+        html += '<button onclick="closeModal();showToast(\'24 sertifikat berhasil diterbitkan\')" class="w-full py-3 bg-gradient-to-r from-emerald-500 to-teal-600 text-white text-xs font-bold rounded-xl shadow-lg shadow-emerald-500/30 active:scale-95 transition"><i class="fa fa-magic mr-1"></i> Generate Sekarang</button>';
+        html += '</div>';
+      } else if (type === "addPartner") {
+        html = '<h3 class="text-sm font-bold text-slate-800 mb-3">Tambah Partner Baru</h3>';
+        html += '<div class="space-y-3">';
+        html += '<div><label class="text-[10px] font-semibold text-slate-500 uppercase tracking-wide">Nama Partner / Sponsor</label><input type="text" placeholder="Nama perusahaan/lembaga" class="w-full mt-1 px-3 py-2.5 text-xs border border-slate-200 rounded-lg"></div>';
+        html += '<div><label class="text-[10px] font-semibold text-slate-500 uppercase tracking-wide">Tipe Partner</label><select class="w-full mt-1 px-3 py-2.5 text-xs border border-slate-200 rounded-lg bg-white"><option>Sponsor</option><option>Media Partner</option><option>Venue Partner</option><option>Komunitas</option><option>Infrastruktur</option></select></div>';
+        html += '<div><label class="text-[10px] font-semibold text-slate-500 uppercase tracking-wide">Kontak (Email/WA)</label><input type="text" placeholder="email@contoh.com / 0812xxxx" class="w-full mt-1 px-3 py-2.5 text-xs border border-slate-200 rounded-lg"></div>';
+        html += '<div><label class="text-[10px] font-semibold text-slate-500 uppercase tracking-wide">Website</label><input type="url" placeholder="https://..." class="w-full mt-1 px-3 py-2.5 text-xs border border-slate-200 rounded-lg"></div>';
+        html += '<div><label class="text-[10px] font-semibold text-slate-500 uppercase tracking-wide">URL Logo</label><input type="url" placeholder="https://...logo.png" class="w-full mt-1 px-3 py-2.5 text-xs border border-slate-200 rounded-lg"></div>';
+        html += '<div><label class="text-[10px] font-semibold text-slate-500 uppercase tracking-wide">Deskripsi</label><textarea rows="2" placeholder="Deskripsi singkat partner..." class="w-full mt-1 px-3 py-2.5 text-xs border border-slate-200 rounded-lg resize-none"></textarea></div>';
+        html += '<div class="flex items-center justify-between p-3 bg-slate-50 rounded-lg"><span class="text-xs font-medium text-slate-600">Partner Aktif</span><div class="switch on" onclick="this.classList.toggle(\'on\')"></div></div>';
+        html += '<button onclick="closeModal();showToast(\'Partner baru berhasil ditambahkan\')" class="w-full py-3 bg-gradient-to-r from-purple-500 to-violet-600 text-white text-xs font-bold rounded-xl shadow-lg shadow-purple-500/30 active:scale-95 transition"><i class="fa fa-handshake-o mr-1"></i> Simpan Partner</button>';
+        html += '</div>';
+      } else if (type === "addSpeaker") {
+        html = '<h3 class="text-sm font-bold text-slate-800 mb-3">Tambah Pembicara (Speaker)</h3>';
+        html += '<div class="space-y-3">';
+        html += '<div><label class="text-[10px] font-semibold text-slate-500 uppercase tracking-wide">Pilih User (dari anggota terdaftar)</label><select id="speakerUser" class="w-full mt-1 px-3 py-2.5 text-xs border border-slate-200 rounded-lg bg-white">';
+        USERS.forEach(function(u){ html += '<option value="'+u.id+'">' + u.name + ' (@' + u.username + ')</option>'; });
+        html += '</select></div>';
+        html += '<div><label class="text-[10px] font-semibold text-slate-500 uppercase tracking-wide">Pilih Event</label><select id="speakerEvent" class="w-full mt-1 px-3 py-2.5 text-xs border border-slate-200 rounded-lg bg-white">';
+        EVENTS.forEach(function(e){ html += '<option value="'+e.id+'">' + e.title + '</option>'; });
+        html += '</select></div>';
+        html += '<div><label class="text-[10px] font-semibold text-slate-500 uppercase tracking-wide">Topik Pembicaraan</label><input type="text" placeholder="Contoh: Membangun REST API dengan FastAPI" class="w-full mt-1 px-3 py-2.5 text-xs border border-slate-200 rounded-lg"></div>';
+        html += '<div><label class="text-[10px] font-semibold text-slate-500 uppercase tracking-wide">Bio Singkat Pembicara</label><textarea rows="3" placeholder="Latar belakang, pengalaman, keahlian..." class="w-full mt-1 px-3 py-2.5 text-xs border border-slate-200 rounded-lg resize-none"></textarea></div>';
+        html += '<div><label class="text-[10px] font-semibold text-slate-500 uppercase tracking-wide">Materi Presentasi (opsional)</label><div class="mt-1 border-2 border-dashed border-slate-200 rounded-lg p-4 text-center cursor-pointer hover:border-orange-300 hover:bg-orange-50/50 transition" onclick="document.getElementById(\'speakerFile\').click()"><i class="fa fa-cloud-upload text-2xl text-slate-300 mb-1 block"></i><p class="text-[11px] text-slate-400">Ketuk untuk unggah file (PDF/PPT/ZIP)</p><input type="file" id="speakerFile" class="hidden" accept=".pdf,.ppt,.pptx,.zip"><p id="speakerFileName" class="text-[10px] text-orange-500 font-medium mt-1 hidden"></p></div></div>';
+        html += '<div class="bg-blue-50 border border-blue-200 rounded-lg p-3 text-[11px] text-blue-700"><i class="fa fa-info-circle mr-1"></i> User harus terdaftar terlebih dahulu sebagai anggota. Speaker otomatis mendapatkan poin &amp; badge khusus.</div>';
+        html += '<button onclick="closeModal();showToast(\'Speaker berhasil ditambahkan ke event\')" class="w-full py-3 bg-gradient-to-r from-blue-500 to-indigo-600 text-white text-xs font-bold rounded-xl shadow-lg shadow-blue-500/30 active:scale-95 transition"><i class="fa fa-microphone mr-1"></i> Simpan Speaker</button>';
+        html += '</div>';
+      }
+      c.innerHTML = html;
+      if (type === "addEvent") { initAgenda(); }
+      if (type === "addSpeaker") {
+        var fi = document.getElementById("speakerFile");
+        if (fi) fi.addEventListener("change", function(){
+          var fn = document.getElementById("speakerFileName");
+          if (this.files.length > 0) { fn.textContent = this.files[0].name; fn.classList.remove("hidden"); }
+        });
+      }
+      document.getElementById("modalOverlay").classList.add("show");
+      if (tg && tg.HapticFeedback) tg.HapticFeedback.selectionChanged();
+    };
+    window.closeModal = function() { document.getElementById("modalOverlay").classList.remove("show"); };
+
+    // ===== AGENDA / RUNDOWN DINAMIS =====
+    window.initAgenda = function() {
+      var list = document.getElementById("agendaList");
+      if (!list) return;
+      list.innerHTML = "";
+      addAgendaRow(); addAgendaRow();
+    };
+    window.addAgendaRow = function() {
+      var list = document.getElementById("agendaList");
+      if (!list) return;
+      var row = document.createElement("div");
+      row.className = "flex gap-2 items-center";
+      row.innerHTML = '<input type="time" class="w-24 px-2 py-2 text-xs border border-slate-200 rounded-lg font-mono" value="09:00"><input type="text" placeholder="Nama sesi / kegiatan" class="flex-1 px-3 py-2 text-xs border border-slate-200 rounded-lg"><button onclick="this.parentElement.remove()" class="w-8 h-8 rounded-lg bg-red-50 text-red-500 flex items-center justify-center shrink-0 active:scale-90 transition"><i class="fa fa-times text-xs"></i></button>';
+      list.appendChild(row);
+    };
+
+    window.logoutAdmin = function() {
+      if (tg && tg.showConfirm) {
+        tg.showConfirm("Yakin keluar dari panel admin?", function(ok){ if(ok){ tg.close(); } });
+      } else { showToast("Berhasil keluar"); }
+    };
+
+    // ===== INIT =====
+    renderUsers();
+    renderEventsAdmin();
+  })();
+  </script>
+
+</body>
+</html>

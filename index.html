@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PalembangPy — Komunitas Python Palembang</title>
+  <link rel="shortcut icon" href="/img/palembangpy.png" type="image/x-icon" />
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
+  <style>
+    body { font-family: 'Inter', system-ui, -apple-system, sans-serif; }
+    
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+    }
+    @keyframes wave {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-float { animation: float 4s ease-in-out infinite; }
+    .animate-fadeUp { animation: fadeUp 0.8s ease-out forwards; }
+    .wave-anim { animation: wave 8s linear infinite; }
+    
+    .gradient-sunset {
+      background: linear-gradient(180deg, #ff9a56 0%, #ff6b6b 30%, #c44569 60%, #5f27cd 100%);
+    }
+    .text-gradient-ampera {
+      background: linear-gradient(135deg, #ff7b00 0%, #ff4757 50%, #c44569 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+  </style>
+</head>
+<body class="bg-white overflow-x-hidden">
+
+  <!-- ==================== NAVBAR ==================== -->
+  <nav class="sticky top-0 z-50 bg-white/85 backdrop-blur-xl border-b border-orange-100">
+    <div class="max-w-6xl mx-auto px-4 md:px-6 py-3 flex items-center justify-between">
+      <a href="index.html" class="flex items-center gap-2">
+        <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-orange-500 to-red-500 flex items-center justify-center shadow-lg shadow-orange-500/30">
+          <i class="fa fa-code text-white text-sm"></i>
+        </div>
+        <span class="font-bold text-slate-800">PalembangPy</span>
+      </a>
+      <div class="hidden md:flex items-center gap-6 text-sm text-slate-600">
+        <a href="index.html" class="text-orange-600 font-semibold">Beranda</a>
+        <a href="events.html" class="hover:text-orange-600 transition">Event</a>
+        <a href="legal.html" class="hover:text-orange-600 transition">Legal</a>
+      </div>
+      <a href="https://t.me/PalembangPyBot" class="px-4 py-2 text-xs md:text-sm font-semibold bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-xl shadow-md shadow-orange-500/25 hover:shadow-lg transition-all">
+        Gabung Member
+      </a>
+    </div>
+  </nav>
+
+  <!-- ==================== HERO dengan Jembatan Ampera ==================== -->
+  <section class="relative gradient-sunset pt-24 md:pt-32 pb-0 overflow-hidden">
+    <!-- Bintang & awan -->
+    <div class="absolute inset-0 pointer-events-none">
+      <div class="absolute top-16 left-[10%] w-1.5 h-1.5 bg-white/60 rounded-full animate-pulse"></div>
+      <div class="absolute top-24 right-[20%] w-1 h-1 bg-white/50 rounded-full animate-pulse" style="animation-delay: 0.5s"></div>
+      <div class="absolute top-32 left-[40%] w-1 h-1 bg-white/40 rounded-full animate-pulse" style="animation-delay: 1s"></div>
+      <!-- Matahari senja -->
+      <div class="absolute top-20 md:top-24 left-1/2 -translate-x-1/2 w-24 h-24 md:w-36 md:h-36 rounded-full bg-gradient-to-b from-yellow-200 to-orange-400 blur-[1px] opacity-90 animate-float"></div>
+    </div>
+
+    <div class="relative max-w-6xl mx-auto px-4 md:px-6 text-center text-white pb-8 md:pb-12">
+      <div class="inline-flex items-center gap-2 px-3 py-1.5 bg-white/15 backdrop-blur-md rounded-full text-[10px] md:text-xs font-medium mb-4 md:mb-6 border border-white/20">
+        <span class="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse"></span>
+        Komunitas Python Kota Palembang
+      </div>
+      <h1 class="text-3xl md:text-5xl lg:text-6xl font-extrabold leading-tight mb-3 md:mb-5 animate-fadeUp">
+        Belajar Python<br class="hidden md:block">
+        <span class="bg-gradient-to-r from-yellow-200 via-orange-200 to-red-200 bg-clip-text text-transparent">
+          di Bumi Sriwijaya
+        </span>
+      </h1>
+      <p class="text-sm md:text-lg text-white/80 max-w-xl mx-auto mb-6 md:mb-8 animate-fadeUp" style="animation-delay: 0.2s">
+        Bergabung dengan komunitas developer Python resmi di kota Palembang. Belajar, berbagi, dan tumbuh bersama dalam kegiatan yang penuh inovasi terbaru.
+      </p>
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-3 animate-fadeUp" style="animation-delay: 0.4s">
+        <a href="https://t.me/PalembangPyBot" class="w-full sm:w-auto px-6 py-3 bg-white text-orange-600 font-semibold text-sm rounded-xl shadow-xl hover:shadow-2xl hover:-translate-y-0.5 transition-all">
+          <i class="fa fa-rocket mr-2"></i>Mulai Sekarang
+        </a>
+        <a href="#event" class="w-full sm:w-auto px-6 py-3 bg-white/15 backdrop-blur-md border border-white/30 text-white font-semibold text-sm rounded-xl hover:bg-white/25 transition-all">
+          <i class="fa fa-calendar mr-2"></i>Lihat Event
+        </a>
+      </div>
+
+      <!-- Statistik (DINAMIS dari API) -->
+      <div class="grid grid-cols-4 gap-4 md:gap-4 max-w-lg mx-auto mt-8 md:mt-12">
+        <div class="bg-white/10 backdrop-blur-md rounded-xl p-3 md:p-4 border border-white/20">
+          <p class="text-xl md:text-3xl font-bold" id="stat-members">0</p>
+          <p class="text-[10px] md:text-xs text-white/70 mt-0.5">Anggota</p>
+        </div>
+        <div class="bg-white/10 backdrop-blur-md rounded-xl p-3 md:p-4 border border-white/20">
+          <p class="text-xl md:text-3xl font-bold" id="stat-events">0</p>
+          <p class="text-[10px] md:text-xs text-white/70 mt-0.5">Event</p>
+        </div>
+        <div class="bg-white/10 backdrop-blur-md rounded-xl p-3 md:p-4 border border-white/20">
+          <p class="text-xl md:text-3xl font-bold" id="stat-projects">0</p>
+          <p class="text-[10px] md:text-xs text-white/70 mt-0.5">Lokakarya</p>
+        </div>
+        <div class="bg-white/10 backdrop-blur-md rounded-xl p-3 md:p-4 border border-white/20">
+          <p class="text-xl md:text-3xl font-bold" id="stat-speakers">0</p>
+          <p class="text-[10px] md:text-xs text-white/70 mt-0.5">Pembicara</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== Ilustrasi Jembatan Ampera (SVG) ===== -->
+    <div class="relative w-full">
+      <svg viewBox="0 0 1200 320" class="w-full block" preserveAspectRatio="xMidYMax meet">
+        <!-- Refleksi di air -->
+        <defs>
+          <linearGradient id="waterGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#1e3a5f" stop-opacity="0.9"/>
+            <stop offset="100%" stop-color="#0f1e3d" stop-opacity="1"/>
+          </linearGradient>
+          <linearGradient id="towerGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#ff8c42"/>
+            <stop offset="100%" stop-color="#e63946"/>
+          </linearGradient>
+          <linearGradient id="bridgeDeck" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#ff7b00"/>
+            <stop offset="100%" stop-color="#c92a2a"/>
+          </linearGradient>
+        </defs>
+
+        <!-- Siluet kota di kejauhan -->
+        <g fill="#2d1b4e" opacity="0.6">
+          <rect x="50" y="200" width="40" height="60"/>
+          <rect x="100" y="180" width="30" height="80"/>
+          <rect x="1050" y="190" width="35" height="70"/>
+          <rect x="1100" y="210" width="45" height="50"/>
+          <polygon points="80,200 100,170 120,200"/>
+          <polygon points="1080,190 1100,160 1120,190"/>
+        </g>
+
+        <!-- Menara kiri Ampera -->
+        <g>
+          <rect x="240" y="80" width="22" height="160" fill="url(#towerGrad)" rx="3"/>
+          <rect x="235" y="75" width="32" height="12" fill="#e63946" rx="2"/>
+          <rect x="235" y="235" width="32" height="12" fill="#c92a2a" rx="2"/>
+          <!-- Jendela menara -->
+          <rect x="246" y="100" width="10" height="8" fill="#fff3b0" opacity="0.7" rx="1"/>
+          <rect x="246" y="120" width="10" height="8" fill="#fff3b0" opacity="0.5" rx="1"/>
+          <rect x="246" y="140" width="10" height="8" fill="#fff3b0" opacity="0.6" rx="1"/>
+          <rect x="246" y="160" width="10" height="8" fill="#fff3b0" opacity="0.4" rx="1"/>
+          <!-- Puncak menara -->
+          <polygon points="251,55 240,75 262,75" fill="#e63946"/>
+          <circle cx="251" cy="52" r="3" fill="#ffd166"/>
+        </g>
+
+        <!-- Menara kanan Ampera -->
+        <g>
+          <rect x="938" y="80" width="22" height="160" fill="url(#towerGrad)" rx="3"/>
+          <rect x="933" y="75" width="32" height="12" fill="#e63946" rx="2"/>
+          <rect x="933" y="235" width="32" height="12" fill="#c92a2a" rx="2"/>
+          <rect x="944" y="100" width="10" height="8" fill="#fff3b0" opacity="0.7" rx="1"/>
+          <rect x="944" y="120" width="10" height="8" fill="#fff3b0" opacity="0.5" rx="1"/>
+          <rect x="944" y="140" width="10" height="8" fill="#fff3b0" opacity="0.6" rx="1"/>
+          <rect x="944" y="160" width="10" height="8" fill="#fff3b0" opacity="0.4" rx="1"/>
+          <polygon points="949,55 938,75 960,75" fill="#e63946"/>
+          <circle cx="949" cy="52" r="3" fill="#ffd166"/>
+        </g>
+
+        <!-- Kabel gantung (catenary) -->
+        <path d="M 251 80 Q 600 140 949 80" stroke="#ffd166" stroke-width="3" fill="none" opacity="0.9"/>
+        <path d="M 251 85 Q 600 145 949 85" stroke="#ffb703" stroke-width="2" fill="none" opacity="0.6"/>
+        <!-- Kabel vertikal -->
+        <g stroke="#ffd166" stroke-width="1.5" opacity="0.8">
+          <line x1="320" y1="105" x2="320" y2="200"/>
+          <line x1="400" y1="118" x2="400" y2="200"/>
+          <line x1="480" y1="128" x2="480" y2="200"/>
+          <line x1="560" y1="133" x2="560" y2="200"/>
+          <line x1="640" y1="133" x2="640" y2="200"/>
+          <line x1="720" y1="128" x2="720" y2="200"/>
+          <line x1="800" y1="118" x2="800" y2="200"/>
+          <line x1="880" y1="105" x2="880" y2="200"/>
+        </g>
+
+        <!-- Dek jembatan (badan jalan) -->
+        <rect x="200" y="200" width="800" height="18" fill="url(#bridgeDeck)" rx="4"/>
+        <rect x="200" y="218" width="800" height="6" fill="#a4161a" rx="2"/>
+        <!-- Garis jalan -->
+        <g stroke="#fff3b0" stroke-width="2" stroke-dasharray="12 8" opacity="0.8">
+          <line x1="210" y1="209" x2="990" y2="209"/>
+        </g>
+        <!-- Pagar jembatan -->
+        <g stroke="#ff7b00" stroke-width="2" opacity="0.7">
+          <line x1="200" y1="198" x2="1000" y2="198"/>
+        </g>
+
+        <!-- Perahu/boat di Sungai Musi -->
+        <g class="animate-float" style="animation-delay: 1s">
+          <ellipse cx="600" cy="275" rx="35" ry="8" fill="#8b4513"/>
+          <rect x="595" y="258" width="10" height="18" fill="#6b3410"/>
+          <polygon points="605,258 625,268 605,272" fill="#ffd166"/>
+        </g>
+        <g class="animate-float" style="animation-delay: 2s">
+          <ellipse cx="350" cy="285" rx="25" ry="6" fill="#6b3410"/>
+          <rect x="347" y="272" width="6" height="13" fill="#4a2508"/>
+        </g>
+
+        <!-- Sungai Musi (air) -->
+        <rect x="0" y="240" width="1200" height="80" fill="url(#waterGrad)"/>
+        <!-- Refleksi jembatan di air -->
+        <rect x="200" y="242" width="800" height="4" fill="#ff7b00" opacity="0.3"/>
+        <!-- Gelombang -->
+        <g class="wave-anim" opacity="0.3">
+          <path d="M 0 260 Q 30 255 60 260 T 120 260 T 180 260 T 240 260 T 300 260 T 360 260 T 420 260 T 480 260 T 540 260 T 600 260 T 660 260 T 720 260 T 780 260 T 840 260 T 900 260 T 960 260 T 1020 260 T 1080 260 T 1140 260 T 1200 260" stroke="#7dd3fc" stroke-width="1.5" fill="none"/>
+          <path d="M 0 275 Q 30 270 60 275 T 120 275 T 180 275 T 240 275 T 300 275 T 360 275 T 420 275 T 480 275 T 540 275 T 600 275 T 660 275 T 720 275 T 780 275 T 840 275 T 900 275 T 960 275 T 1020 275 T 1080 275 T 1140 275 T 1200 275" stroke="#bae6fd" stroke-width="1" fill="none"/>
+        </g>
+        <!-- Duplikat gelombang untuk animasi mulus -->
+        <g class="wave-anim" opacity="0.2" style="animation-delay: -4s">
+          <path d="M 0 268 Q 30 263 60 268 T 120 268 T 180 268 T 240 268 T 300 268 T 360 268 T 420 268 T 480 268 T 540 268 T 600 268 T 660 268 T 720 268 T 780 268 T 840 268 T 900 268 T 960 268 T 1020 268 T 1080 268 T 1140 268 T 1200 268" stroke="#7dd3fc" stroke-width="1" fill="none"/>
+        </g>
+      </svg>
+    </div>
+  </section>
+
+  <!-- ==================== TENTANG ==================== -->
+  <section id="tentang" class="py-12 md:py-20 bg-white">
+    <div class="max-w-6xl mx-auto px-4 md:px-6">
+      <div class="text-center mb-10 md:mb-14">
+        <span class="inline-block px-3 py-1 bg-orange-50 text-orange-600 text-xs font-semibold rounded-full mb-3">Tentang Kami</span>
+        <h2 class="text-2xl md:text-4xl font-bold text-slate-800 mb-3">
+          Komunitas <span class="text-gradient-ampera">Python #1</span> di Palembang
+        </h2>
+        <p class="text-sm md:text-base text-slate-500 max-w-2xl mx-auto">
+          Berdiri sejak 2025, PalembangPy adalah wadah berkumpulnya para developer, mahasiswa, dan pecinta teknologi 
+          untuk belajar Python bersama — dengan semangat khas anak Sumatera Selatan.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
+        <div class="group bg-gradient-to-br from-orange-50 to-red-50 rounded-2xl p-5 md:p-6 border border-orange-100 hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+          <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-orange-500 to-red-500 flex items-center justify-center text-white text-xl mb-4 shadow-lg shadow-orange-500/25 group-hover:scale-110 transition-transform">
+            <i class="fa fa-graduation-cap"></i>
+          </div>
+          <h3 class="font-bold text-slate-800 mb-2">Belajar Gratis</h3>
+          <p class="text-xs md:text-sm text-slate-500 leading-relaxed">Meetup rutin, workshop, dan sharing session gratis untuk semua level — dari pemula sampai profesional.</p>
+        </div>
+        <div class="group bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-5 md:p-6 border border-blue-100 hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+          <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-500 flex items-center justify-center text-white text-xl mb-4 shadow-lg shadow-blue-500/25 group-hover:scale-110 transition-transform">
+            <i class="fa fa-users"></i>
+          </div>
+          <h3 class="font-bold text-slate-800 mb-2">Jaringan Luas</h3>
+          <p class="text-xs md:text-sm text-slate-500 leading-relaxed">Terhubung dengan 500+ anggota, praktisi industri, dan komunitas tech lain di seluruh Sumatera.</p>
+        </div>
+        <div class="group bg-gradient-to-br from-emerald-50 to-teal-50 rounded-2xl p-5 md:p-6 border border-emerald-100 hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+          <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center text-white text-xl mb-4 shadow-lg shadow-emerald-500/25 group-hover:scale-110 transition-transform">
+            <i class="fa fa-briefcase"></i>
+          </div>
+          <h3 class="font-bold text-slate-800 mb-2">Karir & Sertifikat</h3>
+          <p class="text-xs md:text-sm text-slate-500 leading-relaxed">Dapatkan sertifikat keikutsertaan dan akses lowongan kerja eksklusif dari partner industri kami.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+    <!-- ==================== EVENT ==================== -->
+  <section id="event" class="py-12 md:py-20 bg-gradient-to-b from-orange-50/50 to-white">
+    <div class="max-w-6xl mx-auto px-4 md:px-6">
+      <div class="flex items-end justify-between mb-8 md:mb-12">
+        <div>
+          <span class="inline-block px-3 py-1 bg-orange-50 text-orange-600 text-xs font-semibold rounded-full mb-3">Event Mendatang</span>
+          <h2 class="text-2xl md:text-4xl font-bold text-slate-800">Jangan Sampai <span class="text-gradient-ampera">Ketinggalan!</span></h2>
+        </div>
+        <a href="events.html" class="hidden md:inline-flex items-center gap-1 text-sm font-medium text-orange-600 hover:text-orange-700">
+          Lihat semua <i class="fa fa-arrow-right text-xs"></i>
+        </a>
+      </div>
+
+      <!-- Wadah Dinamis untuk Event Homepage -->
+      <div id="home-event-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+         <!-- Loading Placeholder -->
+         <p id="home-loading" class="text-slate-500 col-span-full py-6 text-center"><i class="fa fa-spinner fa-spin mr-2"></i> Mengambil data event terbaru...</p>
+      </div>
+      
+      <!-- Tombol mobile -->
+      <div class="mt-6 text-center md:hidden">
+         <a href="events.html" class="inline-flex items-center gap-2 text-sm font-semibold text-orange-600">
+           Lihat Semua Event <i class="fa fa-arrow-right"></i>
+         </a>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ==================== FITUR ==================== -->
+  <section id="fitur" class="py-12 md:py-20 bg-white">
+    <div class="max-w-6xl mx-auto px-4 md:px-6">
+      <div class="text-center mb-10 md:mb-14">
+        <span class="inline-block px-3 py-1 bg-orange-50 text-orange-600 text-xs font-semibold rounded-full mb-3">Fitur Platform</span>
+        <h2 class="text-2xl md:text-4xl font-bold text-slate-800 mb-3">Semua yang Kamu <span class="text-gradient-ampera">Butuhkan</span></h2>
+        <p class="text-sm md:text-base text-slate-500 max-w-2xl mx-auto">Satu platform untuk belajar, berpartisipasi, dan mengembangkan karir teknologi bersama komunitas.</p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+        <div class="p-5 md:p-6 rounded-2xl border border-slate-100 hover:border-orange-200 hover:shadow-lg transition-all duration-300">
+          <div class="w-10 h-10 rounded-xl bg-orange-50 flex items-center justify-center text-orange-600 text-lg mb-3">
+            <i class="fa fa-calendar-check-o"></i>
+          </div>
+          <h3 class="font-bold text-slate-800 mb-2">Pendaftaran Mudah</h3>
+          <p class="text-sm text-slate-500">Daftar event cukup 1 klik — langsung terdaftar, dapat notifikasi otomatis.</p>
+        </div>
+        <div class="p-5 md:p-6 rounded-2xl border border-slate-100 hover:border-orange-200 hover:shadow-lg transition-all duration-300">
+          <div class="w-10 h-10 rounded-xl bg-emerald-50 flex items-center justify-center text-emerald-600 text-lg mb-3">
+            <i class="fa fa-id-card-o"></i>
+          </div>
+          <h3 class="font-bold text-slate-800 mb-2">Sertifikat Digital</h3>
+          <p class="text-sm text-slate-500">Otomatis dapat sertifikat setelah hadir — dapat diunduh kapan saja.</p>
+        </div>
+        <div class="p-5 md:p-6 rounded-2xl border border-slate-100 hover:border-orange-200 hover:shadow-lg transition-all duration-300">
+          <div class="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center text-blue-600 text-lg mb-3">
+            <i class="fa fa-telegram"></i>
+          </div>
+          <h3 class="font-bold text-slate-800 mb-2">Notifikasi Telegram</h3>
+          <p class="text-sm text-slate-500">Hubungkan akun Telegram — dapat info jadwal & pengingat langsung.</p>
+        </div>
+        <div class="p-5 md:p-6 rounded-2xl border border-slate-100 hover:border-orange-200 hover:shadow-lg transition-all duration-300">
+          <div class="w-10 h-10 rounded-xl bg-purple-50 flex items-center justify-center text-purple-600 text-lg mb-3">
+            <i class="fa fa-star"></i>
+          </div>
+          <h3 class="font-bold text-slate-800 mb-2">Poin Aktivitas</h3>
+          <p class="text-sm text-slate-500">Kumpulkan poin tiap hadir event — naik level & dapat penghargaan eksklusif.</p>
+        </div>
+        <div class="p-5 md:p-6 rounded-2xl border border-slate-100 hover:border-orange-200 hover:shadow-lg transition-all duration-300">
+          <div class="w-10 h-10 rounded-xl bg-rose-50 flex items-center justify-center text-rose-600 text-lg mb-3">
+            <i class="fa fa-handshake-o"></i>
+          </div>
+          <h3 class="font-bold text-slate-800 mb-2">Jaringan Mitra</h3>
+          <p class="text-sm text-slate-500">Terhubung dengan perusahaan & lembaga yang mendukung komunitas.</p>
+        </div>
+        <div class="p-5 md:p-6 rounded-2xl border border-slate-100 hover:border-orange-200 hover:shadow-lg transition-all duration-300">
+          <div class="w-10 h-10 rounded-xl bg-amber-50 flex items-center justify-center text-amber-600 text-lg mb-3">
+            <i class="fa fa-shield"></i>
+          </div>
+          <h3 class="font-bold text-slate-800 mb-2">Aman & Terpercaya</h3>
+          <p class="text-sm text-slate-500">Data dilindungi, akun terverifikasi — lingkungan belajar yang aman.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== KONTAK ==================== -->
+  <section id="kontak" class="py-12 md:py-20 bg-gradient-to-b from-slate-50 to-white">
+    <div class="max-w-5xl mx-auto px-4 md:px-6">
+      <div class="text-center mb-10 md:mb-14">
+        <span class="inline-block px-3 py-1 bg-orange-50 text-orange-600 text-xs font-semibold rounded-full mb-3">Hubungi Kami</span>
+        <h2 class="text-2xl md:text-4xl font-bold text-slate-800 mb-3">Tetap <span class="text-gradient-ampera">Terhubung</span></h2>
+        <p class="text-sm md:text-base text-slate-500 max-w-2xl mx-auto">Ada pertanyaan atau ide kerjasama? Jangan ragu untuk menghubungi kami kapan saja.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+        <a href="https://t.me/PalembangPyBot" class="flex flex-col items-center p-6 rounded-2xl bg-white border border-slate-100 hover:border-orange-200 hover:shadow-lg transition-all group">
+          <div class="w-12 h-12 rounded-full bg-sky-50 flex items-center justify-center text-sky-500 text-xl mb-3 group-hover:scale-110 transition-transform">
+            <i class="fa fa-telegram"></i>
+          </div>
+          <h3 class="font-bold text-slate-800 mb-1">Telegram</h3>
+          <p class="text-xs text-slate-500">@PalembangPyBot</p>
+        </a>
+        <a href="https://github.com/palembangpy" class="flex flex-col items-center p-6 rounded-2xl bg-white border border-slate-100 hover:border-orange-200 hover:shadow-lg transition-all group">
+          <div class="w-12 h-12 rounded-full bg-slate-900 flex items-center justify-center text-white text-xl mb-3 group-hover:scale-110 transition-transform">
+            <i class="fa fa-github"></i>
+          </div>
+          <h3 class="font-bold text-slate-800 mb-1">GitHub</h3>
+          <p class="text-xs text-slate-500">github.com/palembangpy</p>
+        </a>
+        <a href="mailto:hello@palembangpy.org?subject=Hello, i want ..." class="flex flex-col items-center p-6 rounded-2xl bg-white border border-slate-100 hover:border-orange-200 hover:shadow-lg transition-all group">
+          <div class="w-12 h-12 rounded-full bg-red-50 flex items-center justify-center text-red-500 text-xl mb-3 group-hover:scale-110 transition-transform">
+            <i class="fa fa-envelope"></i>
+          </div>
+          <h3 class="font-bold text-slate-800 mb-1">Email</h3>
+          <p class="text-xs text-slate-500">hello@palembangpy.org</p>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== FOOTER ==================== -->
+  <footer class="bg-slate-900 text-white pt-12 pb-6">
+    <div class="max-w-6xl mx-auto px-4 md:px-6">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-10">
+        <!-- Brand -->
+        <div class="md:col-span-2">
+          <div class="flex items-center gap-2 mb-4">
+            <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-orange-500 to-red-500 flex items-center justify-center shadow-lg">
+              <i class="fa fa-code text-white text-sm"></i>
+            </div>
+            <span class="font-bold text-lg">PalembangPy</span>
+          </div>
+          <p class="text-slate-400 text-sm max-w-xs mb-4">Komunitas pengembang Python di Palembang. Belajar, berbagi, dan tumbuh bersama anak-anak Sumatera Selatan.</p>
+          <div class="flex gap-3">
+            <a href="https://t.me/PalembangPyBot" class="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center text-slate-400 hover:text-white hover:bg-slate-700 transition-colors">
+              <i class="fa fa-telegram"></i>
+            </a>
+            <a href="https://github.com/palembangpy" class="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center text-slate-400 hover:text-white hover:bg-slate-700 transition-colors">
+              <i class="fa fa-github"></i>
+            </a>
+            <a href="https://instagram.com/palembangpy" class="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center text-slate-400 hover:text-white hover:bg-slate-700 transition-colors">
+              <i class="fa fa-instagram"></i>
+            </a>
+            <a href="#" class="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center text-slate-400 hover:text-white hover:bg-slate-700 transition-colors">
+              <i class="fa fa-youtube"></i>
+            </a>
+          </div>
+        </div>
+
+        <!-- Tautan -->
+        <div>
+          <h4 class="font-semibold mb-4">Tautan Cepat</h4>
+          <ul class="space-y-2 text-sm text-slate-400">
+            <li><a href="#tentang" class="hover:text-orange-400 transition-colors">Tentang Kami</a></li>
+            <li><a href="#event" class="hover:text-orange-400 transition-colors">Event</a></li>
+            <li><a href="/projects.html" class="hover:text-orange-400 transition-colors">Lokakarya</a></li>
+            <li><a href="#kontak" class="hover:text-orange-400 transition-colors">Kontak</a></li>
+          </ul>
+        </div>
+
+        <!-- Legal -->
+        <div>
+          <h4 class="font-semibold mb-4">Lainnya</h4>
+          <ul class="space-y-2 text-sm text-slate-400">
+            <li><a href="/legal" class="hover:text-orange-400 transition-colors">Legal</a></li>
+            <li><a href="#" class="hover:text-orange-400 transition-colors">FAQ</a></li>
+            <li><a href="https://t.me/PalembangPyBot" class="hover:text-orange-400 transition-colors">Gabung Member</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="border-t border-slate-800 pt-6 text-center text-xs text-slate-500">
+        <p id="credit">&copy; 2025 PalembangPy — Komunitas Python Palembang. Seluruh hak dilindungi.</p>
+      </div>
+    </div>
+  </footer>
+    <script src="/js/stats.js"></script>
+    <script src="/js/home-events.js"></script>
+    <script>
+      document.getElementById("credit").innerHTML = `&copy; 2025 - ${new Date().getFullYear()} PalembangPy &mdash; Komunitas Python Palembang. Seluruh hak dilindungi.`;
+    </script>
+</body>
+</html>
